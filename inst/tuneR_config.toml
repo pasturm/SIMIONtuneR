@@ -1,0 +1,42 @@
+# tuneR configuration file
+
+# Number of processes for running SIMION in parallel
+# Note: maximum might be limited by available RAM, not by available cores
+np = 4
+
+# SIMION iob name, incl. path
+iob = "C:\\Users\\pst\\SIMION\\test.iob"
+
+# SIMION executable directory
+simion_dir = "C:\\Program Files\\SIMION-8.1"
+
+# Number of ions on detector per experiment
+# Note: make sure "Num particles" in SIMION's fly2 file is > n_ions
+n_ions = 500
+
+# Number of repetitions
+n_repeats = 10
+
+# Response variables
+[responses]
+1 = {Name = "Resolving power", 	Target = 10000,	Weight = 1}
+2 = {Name = "Sensitivity", 		Target = 1,		Weight = 1}
+
+# Factors
+# Note: between 3 and 7 factors need to be enabled
+[factors]
+1 = { Name = "v1", 		Enabled = 1,	Transformation = "V1",			Range = 10,		LowLimit = -500, 	HighLimit = 500 }
+2 = { Name = "v2", 		Enabled = 1,	Transformation = "V2",			Range = 20, 	LowLimit = -500, 	HighLimit = 500 }
+3 = { Name = "v3", 		Enabled = 1, 	Transformation = "V3",			Range = 20, 	LowLimit = -500, 	HighLimit = 500 }
+4 = { Name = "ddif", 	Enabled = 1, 	Transformation = "V4-V5",		Range = 20,		LowLimit = -500, 	HighLimit = 500 }
+5 = { Name = "dave", 	Enabled = 0, 	Transformation = "(V4+V5)/2",	Range = 20, 	LowLimit = -500, 	HighLimit = 500 }
+6 = { Name = "v6", 		Enabled = 0, 	Transformation = "V6",			Range = 20, 	LowLimit = -500, 	HighLimit = 500 }
+
+# Controls
+[controls]
+1 =  { Name = "V1",	Transformation = "v1",				StartValue = 20 }
+2 =  { Name = "V2", Transformation = "v2", 				StartValue = -40 }
+3 =  { Name = "V3", Transformation = "v3", 				StartValue = -100 }
+4 =  { Name = "V4", Transformation = "dave+0.5*ddif", 	StartValue = -200 }
+5 =  { Name = "V5", Transformation = "dave-0.5*ddif", 	StartValue = -300 }
+6 =  { Name = "V6", Transformation = "v6",			 	StartValue = -100 }

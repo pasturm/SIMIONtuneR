@@ -1,0 +1,11 @@
+# Declare line endings of files on checkout.
+*.Rd text eol=crlf
+*.toml text eol=crlf
+*.R text eol=crlf
+.gitignore text eol=crlf
+.gitattributes text eol=crlf
+DESCRIPTION text eol=crlf
+NAMESPACE text eol=crlf
+NEWS text eol=crlf
+*.md text eol=crlf
+
