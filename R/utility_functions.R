@@ -154,19 +154,19 @@ plot_results = function(pltly, k, n_steps, resultdir, result, bbd_data, bestpoin
   legendtext = resultdir
 
   len = length(result[,1])
-
+  
   # generate marker text strings
   tmp1 = list()
-  for (i in 1:length(bbd_data)) {
-    tmp1[[i]] = paste0(names(bbd_data)[i], ": ", bbd_data[,i])
+  for (i in 1:length(runs)) {
+    tmp1[[i]] = paste0(names(runs)[i], ": ", signif(runs[,i], 12))
   }
-  tmp2 = vector(mode = "character", length = length(bbd_data[,1]))
-  for (i in 1:length(bbd_data[,1])) {
+  tmp2 = vector(mode = "character", length = length(runs[,1]))
+  for (i in 1:length(runs[,1])) {
     tmp2[i] = paste0(lapply(tmp1, "[", i), collapse = "<br>")
   }
   tmp3 = list()
-  for (i in 1:length(bestpoint)) {
-    tmp3[[i]] = paste0(names(bestpoint)[i], ": ", bestpoint[i])
+  for (i in 1:length(bestpoint_run)) {
+    tmp3[[i]] = paste0(names(bestpoint_run)[i], ": ", signif(bestpoint_run[i], 12))
   }
   tmp4 = paste0(lapply(tmp3, "[", 1), collapse = "<br>")
   # add markers

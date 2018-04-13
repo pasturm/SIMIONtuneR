@@ -257,19 +257,19 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   }
 
   # make runs data.frame
-  runs = data.frame(run_no = 1)
+  bestpoint_run = data.frame(run_no = 1)
   for (i in 1:ncont) {
-    runs[controls$Name[i]] = tryCatch(eval(parse(text = controls$Transformation[i])),
-                                             error = function(e) controls$StartValue[i])
+    bestpoint_run[controls$Name[i]] = tryCatch(eval(parse(text = controls$Transformation[i])),
+                                               error = function(e) controls$StartValue[i])
   }
 
   # run experiment
   print(paste(paste0("Best point verification run:"),
-              paste0(names(runs), "=", round(runs,2), collapse = ", ")))
+              paste0(names(bestpoint_run), "=", round(bestpoint_run,2), collapse = ", ")))
 
-  write.table(signif(runs, 12), file = file.path(tuneR_dir, "runs.txt"), sep = "|",
+  write.table(signif(bestpoint_run, 12), file = file.path(tuneR_dir, "runs.txt"), sep = "|",
                 row.names = FALSE, col.names = FALSE, eol = "|\n")
-  write.table(signif(runs, 12), file = file.path(tuneR_dir, resultdir, "bestpoint_run.txt"), sep = "|",
+  write.table(signif(bestpoint_run, 12), file = file.path(tuneR_dir, resultdir, "bestpoint_run.txt"), sep = "|",
               row.names = FALSE, col.names = TRUE, eol = "|\n")
 
   # run simulation

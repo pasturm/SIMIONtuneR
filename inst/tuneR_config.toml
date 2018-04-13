@@ -1,14 +1,14 @@
-# tuneR configuration file
+# SIMIONtuneR configuration file
 
 # Number of processes for running SIMION in parallel
 # Note: maximum might be limited by available RAM, not by available cores
 np = 4
 
-# SIMION iob name, incl. path
-iob = "C:\\Users\\pst\\SIMION\\test.iob"
+# SIMION iob name, incl. path (use forward slash or double backslash)
+iob = "C:/Users/pst/SIMION/test.iob"
 
-# SIMION executable directory
-simion_dir = "C:\\Program Files\\SIMION-8.1"
+# SIMION executable directory (use forward slash or double backslash)
+simion_dir = "C:/Program Files/SIMION-8.1"
 
 # Number of ions per run
 # Note: make sure "Num particles" in SIMION's fly2 file is > n_ions
