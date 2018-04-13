@@ -15,8 +15,9 @@ A typical RSM optimization workflow includes:
 * Running the simulation with the best point to verify the model,
 * Generate a new Box-Behnken design with the best point as starting values, etc.
 
-The tuning parameters are configured in a configuration file (tuneR_config.toml)
-and the lua script of the SIMION simulation needs to be adjusted accordingly.
+The tuning parameters are configured in a [configuration file](https://github.com/pasturm/SIMIONtuneR/blob/master/inst/tuneR_config.toml)
+and the [lua script](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/example.lua)
+of the SIMION simulation needs to be adjusted accordingly.
 
 
 ## Installation
@@ -32,7 +33,7 @@ See [NEWS](https://github.com/pasturm/SIMIONtuneR/blob/master/NEWS).
 ## Notes
 * This is currently very poorly documented. 
 * See [tools](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/)
-for additional files, which are required for the SIMION simulations.
+for additional files, which are required in the SIMION workbench directory.
 * Parallel processing is based on the ZeroMQ (ZMQ) library, which is 
 bundled with SIMION 8.2 Early Access Mode.
 * Currently this only works for voltage optimization, but it might be extended to 

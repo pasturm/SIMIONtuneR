@@ -61,7 +61,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   
   # delete previous results file if run was aborted
   if (file.exists(file.path(tuneR_dir, "results.txt"))) {
-    rv = file.remove(file.path(tuneR_dir, "results.txt"))
+    file.remove(file.path(tuneR_dir, "results.txt"))
   }
   
   # factors
@@ -143,10 +143,8 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   resultdir = paste(timestring, formatC(k, width = 2, flag = "0"), sep="_")
   dir.create(file.path(tuneR_dir, resultdir))
 
-  # write bbd.txt to resultdir
+  # bbd_data
   bbd_data = rsm::decode.data(design[,3:(3+nfact-1)])
-  write.table(bbd_data, file = file.path(tuneR_dir, resultdir, "bbd.txt"), 
-              sep = ",", row.names = FALSE)
 
   # assign factor values to variables
   for (i in 1:nfact0) {
@@ -159,15 +157,16 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   }
 
   # make runs data.frame
-  runs = data.frame(ini = rep(NA, length(bbd_data[,1])))
+  runs = data.frame(run_no = seq_len(length(bbd_data[,1])))
   for (i in 1:ncont) {
     runs[controls$Name[i]] = tryCatch(eval(parse(text = controls$Transformation[i])),
-                                             error = function(e) controls$StartValue[i])
+                                      error = function(e) controls$StartValue[i])
   }
-  runs$ini = NULL
 
-  write.table(runs, file = file.path(tuneR_dir, "runs.txt"), sep = ",", 
-              row.names = FALSE, col.names = FALSE)
+  write.table(signif(runs, 12), file = file.path(tuneR_dir, "runs.txt"), sep = "|", 
+              row.names = FALSE, col.names = FALSE, eol = "|\n")
+  write.table(signif(runs, 12), file = file.path(tuneR_dir, resultdir, "runs.txt"), sep = "|", 
+              row.names = FALSE, col.names = TRUE, eol = "|\n")
 
   print(paste0("Repeat ", k, ", run ", 1, " to ", length(runs[,1]),  " running..."))
   
@@ -196,8 +195,8 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   result = result[order(result$no),]  # order
 
   # copy results.txt to resultsdir
-  rv = file.copy(file.path(tuneR_dir, "results.txt"), file.path(tuneR_dir, resultdir, "results.txt"))
-  rv = file.remove(file.path(tuneR_dir, "results.txt"))
+  file.copy(file.path(tuneR_dir, "results.txt"), file.path(tuneR_dir, resultdir, "results.txt"))
+  file.remove(file.path(tuneR_dir, "results.txt"))
   
   design$res = result$res
   design$sens = result$sens
@@ -249,9 +248,6 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   bestpoint = rsm::code2val(factors_optim_coded, rsm::codings(design))
   bestpoint_predicted = data.frame(res = predict(tuner_rsm_R, factors_optim_coded),
                                    sens = predict(tuner_rsm_S, factors_optim_coded))
-  # write bestpoint to bestpoint.txt
-  write.table(bestpoint, file = file.path(tuneR_dir, resultdir, "bestpoint.txt"),
-              sep = ",", row.names = FALSE)
 
   # verify bestpoint -----------------------------------------------------------
 
@@ -261,20 +257,20 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   }
 
   # make runs data.frame
-  runs = data.frame(ini = NA)
+  runs = data.frame(run_no = 1)
   for (i in 1:ncont) {
     runs[controls$Name[i]] = tryCatch(eval(parse(text = controls$Transformation[i])),
                                              error = function(e) controls$StartValue[i])
   }
-  runs$ini = NULL
 
   # run experiment
   print(paste(paste0("Best point verification run:"),
               paste0(names(runs), "=", round(runs,2), collapse = ", ")))
 
-  
-  write.table(runs, file = file.path(tuneR_dir, "runs.txt"), sep = ",",
-                row.names = FALSE, col.names = FALSE)
+  write.table(signif(runs, 12), file = file.path(tuneR_dir, "runs.txt"), sep = "|",
+                row.names = FALSE, col.names = FALSE, eol = "|\n")
+  write.table(signif(runs, 12), file = file.path(tuneR_dir, resultdir, "bestpoint_run.txt"), sep = "|",
+              row.names = FALSE, col.names = TRUE, eol = "|\n")
 
   # run simulation
   flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 
@@ -292,10 +288,10 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
                        col.names = c("no", "res", "sens"))
 
   # copy results.txt to resultsdir
-  rv = file.copy(file.path(tuneR_dir, "results.txt"), 
+  file.copy(file.path(tuneR_dir, "results.txt"), 
                  file.path(tuneR_dir, resultdir, "bestpoint_results.txt"))
-  rv = file.remove(file.path(tuneR_dir, "results.txt"))
-  rv = file.remove(file.path(tuneR_dir, "runs.txt"))
+  file.remove(file.path(tuneR_dir, "results.txt"))
+  file.remove(file.path(tuneR_dir, "runs.txt"))
 
   # plot results ---------------------------------------------------------------
   
