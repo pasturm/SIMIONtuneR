@@ -10,6 +10,7 @@ Description: The R package provides an interface to the ion optics simulation
   program SIMION for parameter optmization using design of expriments (DoE) and 
   response surface methodology (RSM).
 License: GPL-3
+URL: https://github.com/pasturm/SIMIONtuneR
 Depends: rsm, RcppTOML, plotly, gplots
 Remotes: github::pasturm/rsm@patch-1
 LinkingTo: rsm
