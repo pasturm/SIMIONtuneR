@@ -1,13 +1,14 @@
 Package: SIMIONtuneR
-Title: SIMION Parameter Tuning using Response-Surface Design
+Title: SIMION Parameter Tuning using Response Surface Methodology
 Version: 0.1.0
 Date: 2018-04-11
 Authors@R: c(
   person("Patrick", "Sturm", role = c("aut", "cre"), 
           email = "sturm@tofwerk.com"),
   person("TOFWERK", role = c("cph", "fnd")))
-Description: The package provides functions for parameter optmization in SIMION
-  software using design-of-expriments methods.
+Description: The R package provides an interface to the ion optics simulation 
+  program SIMION for parameter optmization using design of expriments (DoE) and 
+  response surface methodology (RSM).
 License: GPL-3
 Depends: rsm, RcppTOML, plotly, gplots
 Remotes: github::pasturm/rsm@patch-1

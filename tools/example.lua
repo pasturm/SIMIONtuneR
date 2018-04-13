@@ -45,7 +45,7 @@ local runner = PLIB.runner()
 
 -- Submits run jobs to workers.  Master runs this.
 function runner.jobsetup()
-  local file = assert(io.open(tuneRdir.."experiments.txt"))
+  local file = assert(io.open(tuneRdir.."runs.txt"))
   local i = 0
   for line in file:lines() do
     i = i + 1
@@ -70,13 +70,9 @@ function runner.jobrun(i,V1,V2,V3,V4,V5,V6)
 end
 
 -- Processes each run job result from worker.  Master runs this.
-function runner.jobresult(exp_no,resolution,sensitivity)
-  -- fp = assert(io.open(tuneRdir.."exp_no"..exp_no..".txt","w")) 
-  -- fp:write(string.format("%i, %.3f, %.6f\n", exp_no, resolution or 0, sensitivity))
-  -- io.close(fp)
-  print(exp_no,resolution,sensitivity)
+function runner.jobresult(run_no,resolution,sensitivity)
   fp = assert(io.open(tuneRdir.."results.txt","a+")) 
-  fp:write(string.format("%i, %.3f, %.6f\n", exp_no, resolution or 0, sensitivity))
+  fp:write(string.format("%i, %.3f, %.6f\n", run_no, resolution or 0, sensitivity))
   io.close(fp)
 end
 

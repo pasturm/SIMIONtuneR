@@ -53,7 +53,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   # this allow to run a master without PAs as master = 1.
   file.copy(sub("iob", "lua", iob), file.path(dirname(iob), "master.lua"), overwrite = TRUE)
 
-  # number of ions on detector per experiment
+  # number of ions on detector per run
   n_ions = config$n_ions
 
   # response variables for optimization
@@ -138,7 +138,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
                      abs(factors_enabled$Value[i]), ") /", factors_enabled$Range[i])))
   design = rsm::bbd(nfact, n0 = 1, randomize = FALSE, coding = coding, block = FALSE)
 
-  # run SIMION experiments -----------------------------------------------------
+  # run SIMION runs -----------------------------------------------------
   # make tuneR result directory
   resultdir = paste(timestring, formatC(k, width = 2, flag = "0"), sep="_")
   dir.create(file.path(tuneR_dir, resultdir))
@@ -158,18 +158,18 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
     assign(names(bbd_data)[i], bbd_data[i])
   }
 
-  # make experiments data.frame
-  experiments = data.frame(ini = rep(NA, length(bbd_data[,1])))
+  # make runs data.frame
+  runs = data.frame(ini = rep(NA, length(bbd_data[,1])))
   for (i in 1:ncont) {
-    experiments[controls$Name[i]] = tryCatch(eval(parse(text = controls$Transformation[i])),
+    runs[controls$Name[i]] = tryCatch(eval(parse(text = controls$Transformation[i])),
                                              error = function(e) controls$StartValue[i])
   }
-  experiments$ini = NULL
+  runs$ini = NULL
 
-  write.table(experiments, file = file.path(tuneR_dir, "experiments.txt"), sep = ",", 
+  write.table(runs, file = file.path(tuneR_dir, "runs.txt"), sep = ",", 
               row.names = FALSE, col.names = FALSE)
 
-  print(paste0("Repeat ", k, ", experiment ", 1, " to ", length(experiments[,1]),  " running..."))
+  print(paste0("Repeat ", k, ", run ", 1, " to ", length(runs[,1]),  " running..."))
   
   # run simulations
   flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 
@@ -260,20 +260,20 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
     assign(names(bestpoint)[i], bestpoint[i])
   }
 
-  # make experiments data.frame
-  experiments = data.frame(ini = NA)
+  # make runs data.frame
+  runs = data.frame(ini = NA)
   for (i in 1:ncont) {
-    experiments[controls$Name[i]] = tryCatch(eval(parse(text = controls$Transformation[i])),
+    runs[controls$Name[i]] = tryCatch(eval(parse(text = controls$Transformation[i])),
                                              error = function(e) controls$StartValue[i])
   }
-  experiments$ini = NULL
+  runs$ini = NULL
 
   # run experiment
-  print(paste(paste0("Best point verification experiment running:"),
-              paste0(names(experiments), "=", round(experiments,2), collapse = ", ")))
+  print(paste(paste0("Best point verification run:"),
+              paste0(names(runs), "=", round(runs,2), collapse = ", ")))
 
   
-  write.table(experiments, file = file.path(tuneR_dir, "experiments.txt"), sep = ",",
+  write.table(runs, file = file.path(tuneR_dir, "runs.txt"), sep = ",",
                 row.names = FALSE, col.names = FALSE)
 
   # run simulation
@@ -295,7 +295,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   rv = file.copy(file.path(tuneR_dir, "results.txt"), 
                  file.path(tuneR_dir, resultdir, "bestpoint_results.txt"))
   rv = file.remove(file.path(tuneR_dir, "results.txt"))
-  rv = file.remove(file.path(tuneR_dir, "experiments.txt"))
+  rv = file.remove(file.path(tuneR_dir, "runs.txt"))
 
   # plot results ---------------------------------------------------------------
   
