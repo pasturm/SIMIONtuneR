@@ -71,7 +71,7 @@ end
 -- Processes each run job result from worker. Master runs this.
 function runner.jobresult(run_no,resolution,sensitivity)
   fp = assert(io.open(tuneRdir.."results.txt","a+")) 
-  fp:write(string.format("%i, %.3f, %.6f\n", run_no, resolution or 0, sensitivity))
+  fp:write(string.format("%i|%.3f|%.6f\n", run_no, resolution or 0, sensitivity))
   io.close(fp)
 end
 -------------------------------------------------------------------------------------------------------
