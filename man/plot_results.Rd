@@ -4,8 +4,8 @@
 \alias{plot_results}
 \title{Plots results.}
 \usage{
-plot_results(pltly, k, n_steps, resultdir, result, bbd_data, bestpoint,
-  bestpoint_result, bestpoint_predicted)
+plot_results(pltly, k, n_steps, resultdir, result, runs, bestpoint_run,
+  bestpoint_result, bestpoint_predicted, xylabel)
 }
 \arguments{
 \item{pltly}{Plotly object.}
@@ -18,13 +18,15 @@ plot_results(pltly, k, n_steps, resultdir, result, bbd_data, bestpoint,
 
 \item{result}{Results (Resolving power and sensitivity).}
 
-\item{bbd_data}{Box-Behnken design data.}
+\item{runs}{Box-Behnken design data.}
 
-\item{bestpoint}{Bestpoint factor values.}
+\item{bestpoint_run}{Bestpoint control values.}
 
 \item{bestpoint_result}{Verified bestpoint result.}
 
 \item{bestpoint_predicted}{Model prediction of bestpoint result.}
+
+\item{xylabel}{Axis labels.}
 }
 \description{
 \code{plot_results} plots results.

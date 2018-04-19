@@ -300,11 +300,13 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
     pltly = plotly::plot_ly(result[1:(length(result[,1])-1),], x = ~res)
   }
 
-  pltly = plot_results(pltly, k, config$n_repeats, resultdir, result, bbd_data, 
-                       bestpoint, bestpoint_result, bestpoint_predicted, responses$Name)
+  pltly = plot_results(pltly, k, config$n_repeats, resultdir, result, runs, 
+                       bestpoint_run, bestpoint_result, bestpoint_predicted, 
+                       responses$Name)
 
   # save all data as .RData
-  save(list = ls(all.names = TRUE), file = file.path(tuneR_dir, resultdir, "results.RData"))
+  save(list = ls(all.names = TRUE), 
+       file = file.path(tuneR_dir, resultdir, "results.RData"))
 
   # end of loop
   }

@@ -22,7 +22,7 @@ desirability(factors, Target, w, a, b, c, nfact, xnam, tuner_rsm, Pred_min,
 
 \item{xnam}{Formula names for \code{\link{rsm::rsm()}}.}
 
-\item{tuner_rsm}{Second order model fit to resolving power data.}
+\item{tuner_rsm}{Second order model fit.}
 
 \item{Pred_min}{Minimum value which can be reached by the model within the factor ranges.}
 

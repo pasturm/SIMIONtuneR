@@ -1,7 +1,8 @@
-#' SIMION Parameter Tuning using Response-Surface Design.
+#' SIMION Parameter Tuning using Response Surface Methodology.
 #'
-#' The package provides functions for optmization in SIMION software using 
-#' design-of-expriments methods.
+#' The R package provides an interface to the ion optics simulation program
+#' SIMION for parameter optmization using design of expriments (DoE) and
+#' response surface methodology (RSM).
 #'
 #' @docType package
 #' @author Patrick Sturm <sturm@tofwerk.com>

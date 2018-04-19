@@ -138,15 +138,15 @@ plot_coeffs = function(tuner_rsm, ylab = "") {
 #' @param n_steps Total number of steps.
 #' @param resultdir Results directory (used for legend text).
 #' @param result Results (Resolving power and sensitivity).
-#' @param bbd_data Box-Behnken design data.
-#' @param bestpoint Bestpoint factor values.
+#' @param runs Box-Behnken design data.
+#' @param bestpoint_run Bestpoint control values.
 #' @param bestpoint_result Verified bestpoint result.
 #' @param bestpoint_predicted Model prediction of bestpoint result.
 #' @param xylabel Axis labels.
 #'
 #' @keywords internal
 #' @export
-plot_results = function(pltly, k, n_steps, resultdir, result, bbd_data, bestpoint,
+plot_results = function(pltly, k, n_steps, resultdir, result, runs, bestpoint_run,
                         bestpoint_result, bestpoint_predicted, xylabel) {
 
   colors = gplots::rich.colors(n_steps)
