@@ -40,8 +40,8 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   # open worker processes
   for (i in seq_len(np)) {
     if (nogui) {
-      system(paste0("simion --nogui --quiet fly --adjustable master=0 
-                    --adjustable tuneR=1 \"", iob, "\""), 
+      system(paste0("simion --nogui --quiet fly --adjustable master=0 ",
+                    "--adjustable tuneR=1 \"", iob, "\""), 
              wait = FALSE, show.output.on.console = FALSE)
     } else {
       system(paste0("simion fly --adjustable master=0 --adjustable tuneR=1 \"", 

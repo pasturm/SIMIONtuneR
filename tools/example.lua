@@ -20,24 +20,27 @@ adjustable _lens3_voltage     = -200
 adjustable _lens4_voltage     = -300
 adjustable _lens5_voltage     = -100
 
+
 -------------------------------------------------------------------------------------------------------
 -- SIMIONtuneR
 -------------------------------------------------------------------------------------------------------
--- load LuaFileSystem library
+
+-- Load LuaFileSystem library.
 local LFS = require "lfs"
 
--- load parallel processing library
+-- Load parallel processing library.
+-- Note: adjust master's IP address in library if it is not localhost.
 local PLIB = simion.import 'parallellib_pst.lua'
 
 -- How this process runs: 0=worker, 1=master, 2=worker and master
 adjustable master = 2
 
--- SIMIONtuneR variables, do not change
+-- SIMIONtuneR variables. Do not change.
 adjustable tuneR = 0  -- tuneR mode: 0="no", 1="yes"
-adjustable maxn = 1000  -- (maximum) number of ions flown for each tuneR run
-local tuneRdir = LFS.currentdir().."\\tuneR\\"
+adjustable maxn = 1  -- maximum number of ions flown for each tuneR run
+local tuneRdir = LFS.currentdir().."\\tuneR\\"  -- tuneR results directory
 
--- processing run jobs -------------------------------------------------------------------------------
+-- Processing run jobs:
 
 -- Create runner.
 local runner = PLIB.runner()
@@ -76,6 +79,7 @@ function runner.jobresult(run_no,resolution,sensitivity)
 end
 -------------------------------------------------------------------------------------------------------
 
+
 function segment.flym()
 
   if tuneR==1 then
@@ -83,5 +87,5 @@ function segment.flym()
   else
     run()
   end
-  
+
 end

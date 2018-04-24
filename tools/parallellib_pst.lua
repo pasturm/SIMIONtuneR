@@ -3,14 +3,15 @@
  SIMION parallel processing Fly'm library.
  (c) 2014-2015 Scientific Instrument Services, Inc. Licensed SIMION 8.2.
  v2015-06-05
+ 
+ adapted by Patrick Sturm (pst)
+ (c) 2018 TOFWERK
 --]]
 
 require "zmq"
 require "zmq.poller"
---require "zhelpers"
 
-
-local M = {}
+local M = {_VERSION='v2018-04-23'}
 
 local function get_context()
   local context = _G.zmq_context
@@ -117,11 +118,14 @@ function M.runner(master)
   
   local njobs = 0
   
+  -- IP address of master computer
+  -- localhost (if all workers are on master) or IP address of master (if workers are also on remote computers).
+  local MASTER_ADDRESS = "127.0.0.1"
+
   -- Default addresses of sockets.
-  local MASTER_ADDRESS = "tcp://127.0.0.1"
-  o.MASTER_PUSH        = MASTER_ADDRESS .. ":5557"
-  o.MASTER_PULL        = MASTER_ADDRESS .. ":5558"
-  o.MASTER_PUBLISH     = MASTER_ADDRESS .. ":5559"
+  o.MASTER_PUSH        = "tcp://" .. MASTER_ADDRESS .. ":5557"
+  o.MASTER_PULL        = "tcp://" .. MASTER_ADDRESS .. ":5558"
+  o.MASTER_PUBLISH     = "tcp://" .. MASTER_ADDRESS .. ":5559"
   
   -- Schedule a single job.
   function o:run(...)
@@ -167,7 +171,8 @@ function M.runner(master)
     end
   
     if o.is_master and o.jobsetup then
-      simion.sleep(1) -- wait for workers to connect
+      -- simion.sleep(1) -- wait for workers to connect
+      simion.sleep(5) -- pst: wait for workers to connect, longer for remote connections.
       o.jobsetup()
     end
 
@@ -259,10 +264,6 @@ function M.toolbar(runner)
   }
 end
 _G.toolbar = M.toolbar
-
---  receiver:close()
---  context:term()
-
 
 
 --[==[TEST

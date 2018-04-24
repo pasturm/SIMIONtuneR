@@ -34,8 +34,8 @@ See [NEWS](https://github.com/pasturm/SIMIONtuneR/blob/master/NEWS).
 * This is currently very poorly documented. 
 * See [tools](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/)
 for additional files, which are required in the SIMION workbench directory.
-* Parallel processing is based on the ZeroMQ library, which is 
-bundled with SIMION 8.2 Early Access Mode.
+* Parallel processing is based on the ZeroMQ library, which available on the SIMION
+update webpage.
 * Currently this only works for voltage optimization, but it might be extended to 
 geometry optimization in the future.
 * The design of experiments and response surface method closely follows the approach 
