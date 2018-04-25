@@ -11,7 +11,7 @@
 require "zmq"
 require "zmq.poller"
 
-local M = {_VERSION='v2018-04-23'}
+local M = {_VERSION='v2018-04-24'}
 
 local function get_context()
   local context = _G.zmq_context
@@ -171,8 +171,7 @@ function M.runner(master)
     end
   
     if o.is_master and o.jobsetup then
-      -- simion.sleep(1) -- wait for workers to connect
-      simion.sleep(5) -- pst: wait for workers to connect, longer for remote connections.
+      simion.sleep(5) -- pst: wait 5 s for remote workers to connect.
       o.jobsetup()
     end
 
@@ -217,7 +216,7 @@ function M.runner(master)
     -- print 'closing'  -- pst: commented out
     local control = o.context:socket(zmq.PUB)
     control:bind(o.MASTER_PUBLISH)
-    simion.sleep(1)
+    simion.sleep(5)  -- pst: wait 5 s for remote workers to connect
     control:send('close_children')
     control:close()
   end

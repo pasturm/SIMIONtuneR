@@ -37,15 +37,19 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   # close zombie processes (if any)
   system(paste0("lua \"", dirname(iob), "/close_children.lua\""))
   
+  # number of ions on detector per run
+  n_ions = config$n_ions
+  
   # open worker processes
+  flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 ", 
+                      "--adjustable master=0 --adjustable maxn=", n_ions)
   for (i in seq_len(np)) {
     if (nogui) {
-      system(paste0("simion --nogui --quiet fly --adjustable master=0 ",
-                    "--adjustable tuneR=1 \"", iob, "\""), 
+      system(paste("simion --nogui --quiet fly", flyoptions, iob), 
              wait = FALSE, show.output.on.console = FALSE)
     } else {
-      system(paste0("simion fly --adjustable master=0 --adjustable tuneR=1 \"", 
-                    iob, "\""), wait = FALSE, show.output.on.console = FALSE)
+      system(paste("simion fly", flyoptions, iob), 
+             wait = FALSE, show.output.on.console = FALSE)
     }
   }
   
@@ -56,9 +60,6 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   # copy the iob script to master.lua
   # this allow to run a master (with master = 1) without PAs.
   file.copy(sub("iob", "lua", iob), file.path(dirname(iob), "master.lua"), overwrite = TRUE)
-
-  # number of ions on detector per run
-  n_ions = config$n_ions
 
   # response variables for optimization
   responses = do.call(rbind.data.frame, c(config$responses, stringsAsFactors = FALSE))
@@ -90,11 +91,11 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
     factors$Value[i] = eval(parse(text = factors$Transformation[i]))
   }
 
-  # possibly overwrite factor values with previous bestpoint.txt copied to tuneR_dir
-  if (file.exists(file.path(tuneR_dir,"bestpoint.txt"))) {
-    bestpoint_cvs = read.csv(file.path(tuneR_dir,"bestpoint.txt"), stringsAsFactors = FALSE)
-    for (i in 1:length(bestpoint_cvs)) {
-      factors$Value[factors$Name==names(bestpoint_cvs)[i]] = as.numeric(bestpoint_cvs[i])
+  # possibly overwrite factor values with previous bestpoint_run.txt copied to tuneR_dir
+  if (file.exists(file.path(tuneR_dir,"bestpoint_run.txt"))) {
+    bestpoint_csv = read.csv(file.path(tuneR_dir,"bestpoint_run.txt"), stringsAsFactors = FALSE, sep = "|")
+    for (i in 2:(length(bestpoint_csv)-1)) {
+      factors$Value[controls$Name==names(bestpoint_csv)[i]] = as.numeric(bestpoint_csv[i])
     }
   }
 
