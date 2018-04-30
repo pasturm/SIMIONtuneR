@@ -6,7 +6,7 @@
 #' @param y Factors to optimize.
 #' @param rsm_output Second order model fit.
 #' @param nfact Number of factor values.
-#' @param xnam Formula names for \code{\link{rsm::rsm()}}.
+#' @param xnam Formula names for \code{\link{rsm}}.
 #'
 #' @keywords internal
 #' @export
@@ -32,7 +32,7 @@ cost_function = function(y, rsm_output, nfact, xnam) {
 #' @param Pred_min Minimum value which can be reached by the model within the factor ranges.
 #' @param Pred_max Maximum value which can be reached by the model within the factor ranges.
 #' @param nfact Number of factor values.
-#' @param xnam Formula names for \code{\link{rsm::rsm()}}.
+#' @param xnam Formula names for \code{\link{rsm}}.
 #' @param tuner_rsm Second order model fit.
 #'
 #' @keywords internal
@@ -70,7 +70,7 @@ desirability = function(factors, Target, w, a, b, c, nfact, xnam, tuner_rsm,
 #' @param Target Vector of the target values for each response.
 #' @param w Vector of weights for each the response.
 #' @param nfact Number of factor values.
-#' @param xnam Formula names for \code{\link{rsm::rsm()}}.
+#' @param xnam Formula names for \code{\link{rsm}}.
 #' @param tuner_rsm Second order model fit.
 #' @param Pred_min Vector of minimum values which can be reached by the model
 #' within the factor ranges for each response variable.

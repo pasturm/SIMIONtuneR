@@ -16,7 +16,7 @@ desirability_overall(factors, Target, w, nfact, xnam, tuner_rsm, Pred_min,
 
 \item{nfact}{Number of factor values.}
 
-\item{xnam}{Formula names for \code{\link{rsm::rsm()}}.}
+\item{xnam}{Formula names for \code{\link{rsm}}.}
 
 \item{tuner_rsm}{Second order model fit.}
 

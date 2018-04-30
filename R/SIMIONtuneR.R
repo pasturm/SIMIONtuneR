@@ -93,6 +93,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
 
   # possibly overwrite factor values with previous bestpoint_run.txt copied to tuneR_dir
   if (file.exists(file.path(tuneR_dir,"bestpoint_run.txt"))) {
+    warning("Start values are taken from bestpoint_run.txt")
     bestpoint_csv = read.csv(file.path(tuneR_dir,"bestpoint_run.txt"), stringsAsFactors = FALSE, sep = "|")
     for (i in 2:(length(bestpoint_csv)-1)) {
       factors$Value[controls$Name==names(bestpoint_csv)[i]] = as.numeric(bestpoint_csv[i])
