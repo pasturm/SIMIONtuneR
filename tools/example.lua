@@ -32,10 +32,8 @@ local LFS = require "lfs"
 -- Note: adjust master's IP address in library if it is not localhost.
 local PLIB = simion.import 'parallellib_pst.lua'
 
--- How this process runs: 0=worker, 1=master, 2=worker and master
-adjustable master = 2
-
 -- SIMIONtuneR variables. Do not change.
+adjustable master = 2  -- How this process runs: 0=worker, 1=master, 2=worker and master
 adjustable tuneR = 0  -- tuneR mode: 0="no", 1="yes"
 adjustable maxn = 1  -- maximum number of ions flown for each tuneR run
 local tuneRdir = LFS.currentdir().."\\tuneR\\"  -- tuneR results directory
@@ -54,7 +52,8 @@ function runner.jobsetup()
 end
   
 -- Performs each run job. Worker runs this.
--- All controls defined in tuneR_config.toml need to be assigned in the same order here.
+-- Note: The ... arguments of jobrun(i, ...) need to be all the controls 
+-- defined in tuneR_config.toml (in the same order).
 function runner.jobrun(i,V1,V2,V3,V4,V5,V6)
   sim_trajectory_image_control = 3
 

@@ -34,14 +34,13 @@ See [NEWS](https://github.com/pasturm/SIMIONtuneR/blob/master/NEWS).
 * This is currently very poorly documented. 
 * See [tools](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/)
 for additional files, which are required in the SIMION workbench directory.
-* Parallel processing is based on the ZeroMQ library, which available on the SIMION
+* Parallel processing is based on the ZeroMQ library, which is available on the SIMION
 update webpage.
 * Currently this only works for voltage optimization, but it might be extended to 
 geometry optimization in the future.
 * The design of experiments and response surface method closely follows the approach 
 of the TOFWERK Thuner and underlying MKS MODDE-Q software. Notable differences to Thuner/MODDE are:
     * It is open source (+). 
-    * The response surface model optimization works much better (due to improved optimization algorithms and desirability functions) (+). 
+    * The response surface model optimization works much better (due to improved optimization algorithms and desirability functions) and is much easier to configure (+). 
     * It can be used to optimize SIMION simulations (+).
     * It is not a self-contained program and does not have a graphical user interface (-). 
-    * It is relatively easy to configure (provided you are somewhat familiar with SIMION and R) (+).   
