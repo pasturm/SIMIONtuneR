@@ -1,8 +1,10 @@
-SIMIONtuneR 0.1.0
+SIMIONtuneR 0.1.0.900
 --------------------------------------------------------------------------------
 
 * First release of SIMIONtuneR.
 
-* Using forked rsm package https://github.com/pasturm/rsm/tree/patch-1
+* Using forked rsm package https://github.com/pasturm/rsm
 
 * SIMION parallel processing based on the ZeroMQ library.
+
+* Various bug fixes.
