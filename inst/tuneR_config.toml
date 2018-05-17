@@ -20,24 +20,24 @@ n_repeats = 10
 
 # Response variables
 [responses]
-1 = {Name = "Resolving power",  Target = 10000, Weight = 1}
-2 = {Name = "Sensitivity",      Target = 1,     Weight = 1}
+1 = {Name = "Resolving power", Target = 10000, Weight = 1}
+2 = {Name = "Sensitivity",     Target = 1,     Weight = 1}
 
 # Factors
 # Note: between 3 and 7 factors need to be enabled
 [factors]
-1 = { Name = "v1",      Enabled = 1,    Transformation = "V1",          Range = 10,     LowLimit = -500,    HighLimit = 500 }
-2 = { Name = "v2",      Enabled = 1,    Transformation = "V2",          Range = 20,     LowLimit = -500,    HighLimit = 500 }
-3 = { Name = "v3",      Enabled = 1,    Transformation = "V3",          Range = 20,     LowLimit = -500,    HighLimit = 500 }
-4 = { Name = "ddif",    Enabled = 1,    Transformation = "V4-V5",       Range = 20,     LowLimit = -500,    HighLimit = 500 }
-5 = { Name = "dave",    Enabled = 0,    Transformation = "(V4+V5)/2",   Range = 20,     LowLimit = -500,    HighLimit = 500 }
-6 = { Name = "v6",      Enabled = 0,    Transformation = "V6",          Range = 20,     LowLimit = -500,    HighLimit = 500 }
+1 = { Name = "v_1",     Enabled = 1, Transformation = "V1",        Range = 10, LowLimit = -500, HighLimit = 500 }
+2 = { Name = "v_2",     Enabled = 1, Transformation = "V2",        Range = 20, LowLimit = -500, HighLimit = 500 }
+3 = { Name = "v_3",     Enabled = 1, Transformation = "V3",        Range = 20, LowLimit = -500, HighLimit = 500 }
+4 = { Name = "v_diff",  Enabled = 1, Transformation = "V4-V5",     Range = 20, LowLimit = -500, HighLimit = 500 }
+5 = { Name = "v_ave",   Enabled = 0, Transformation = "(V4+V5)/2", Range = 20, LowLimit = -500, HighLimit = 500 }
+6 = { Name = "v_6",     Enabled = 0, Transformation = "V6",        Range = 20, LowLimit = -500, HighLimit = 500 }
 
 # Controls
 [controls]
-1 =  { Name = "V1", Transformation = "v1",              StartValue = 20 }
-2 =  { Name = "V2", Transformation = "v2",              StartValue = -40 }
-3 =  { Name = "V3", Transformation = "v3",              StartValue = -100 }
-4 =  { Name = "V4", Transformation = "dave+0.5*ddif",   StartValue = -200 }
-5 =  { Name = "V5", Transformation = "dave-0.5*ddif",   StartValue = -300 }
-6 =  { Name = "V6", Transformation = "v6",              StartValue = -100 }
+1 =  { Name = "V1", Transformation = "v_1",              StartValue = 20 }
+2 =  { Name = "V2", Transformation = "v_2",              StartValue = -40 }
+3 =  { Name = "V3", Transformation = "v_3",              StartValue = -100 }
+4 =  { Name = "V4", Transformation = "v_ave+0.5*v_diff", StartValue = -200 }
+5 =  { Name = "V5", Transformation = "v_ave-0.5*v_diff", StartValue = -300 }
+6 =  { Name = "V6", Transformation = "v_6",              StartValue = -100 }

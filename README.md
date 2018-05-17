@@ -11,9 +11,9 @@ A typical RSM optimization workflow includes:
 * Generation of a Box-Behnken design (in 3 to 7 factors), 
 * Running SIMION simulations in batch mode (parallelized with ZeroMQ),
 * Fitting second-order response-surface models to the responses (typically sensitivity and resolution),
-* Optimizing the model to find the best point,
-* Running the simulation with the best point to verify the model,
-* Generate a new Box-Behnken design with the best point as starting values, etc.
+* Optimizing the model to find the best parameters,
+* Running the simulation with the optimized parameters to validate the model,
+* Generate a new Box-Behnken design with the optimized parameters as starting values, etc.
 
 The tuning parameters are configured in a [configuration file](https://github.com/pasturm/SIMIONtuneR/blob/master/inst/tuneR_config.toml)
 and the [lua script](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/example.lua)
@@ -22,7 +22,7 @@ of the SIMION simulation needs to be adjusted accordingly.
 
 ## Installation
 ```
-install.packages("devtools")
+if (!require("devtools")) { install.packages("devtools") }
 devtools::install_github("pasturm/SIMIONtuneR")
 ```
 
@@ -42,5 +42,5 @@ geometry optimization in the future.
 of the TOFWERK Thuner and underlying MKS MODDE-Q software. Notable differences to Thuner/MODDE are:
     * It is open source (+). 
     * The response surface model optimization works much better (due to improved optimization algorithms and desirability functions) and is much easier to configure (+). 
-    * It can be used to optimize SIMION simulations (+).
+    * It can be used to efficiently optimize SIMION simulations (+).
     * It is not a self-contained program and does not have a graphical user interface (-). 

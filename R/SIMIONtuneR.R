@@ -3,14 +3,14 @@
 #' \code{run_SIMIONtuneR} runs SIMIONtuneR simulation.
 #'
 #' The experiment needs to be configured in a tuneR_config file (TOML file format).
-#' If you want to start from previous best point, copy bestpoint.txt to tuneR_dir
+#' If you want to start from previous best point, copy bestpoint_run.txt to tuneR_dir
 #' (delete bestpoint.txt if you want to start with starting values from tuneR_config).
 #'
 #' @param tuneR_config path and name of tuneR_config file (.toml)
 #' @param nogui run SIMION with --nogui option (\code{TRUE} (default) or \code{FALSE})
 #'
 #' @examples
-#' configfile = system.file("tuneR_config.toml", package = "SIMIONtuner")
+#' configfile = system.file("tuneR_config.toml", package = "SIMIONtuneR")
 #' run_SIMIONtuner(configfile)
 #'
 #' @export
@@ -35,7 +35,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   np = config$np
   
   # close zombie processes (if any)
-  system(paste0("lua \"", dirname(iob), "/close_children.lua\""))
+  # system(paste0("lua \"", dirname(iob), "/close_children.lua\""))
   
   # number of ions on detector per run
   n_ions = config$n_ions
@@ -93,7 +93,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
 
   # possibly overwrite factor values with previous bestpoint_run.txt copied to tuneR_dir
   if (file.exists(file.path(tuneR_dir,"bestpoint_run.txt"))) {
-    warning("Start values are taken from bestpoint_run.txt")
+    warning("Start values are taken from bestpoint_run.txt", immediate. = TRUE)
     bestpoint_csv = read.csv(file.path(tuneR_dir,"bestpoint_run.txt"), stringsAsFactors = FALSE, sep = "|")
     for (i in 2:(length(bestpoint_csv)-1)) {
       factors$Value[controls$Name==names(bestpoint_csv)[i]] = as.numeric(bestpoint_csv[i])

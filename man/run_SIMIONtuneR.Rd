@@ -16,11 +16,11 @@ run_SIMIONtuneR(tuneR_config, nogui = TRUE)
 }
 \details{
 The experiment needs to be configured in a tuneR_config file (TOML file format).
-If you want to start from previous best point, copy bestpoint.txt to tuneR_dir
+If you want to start from previous best point, copy bestpoint_run.txt to tuneR_dir
 (delete bestpoint.txt if you want to start with starting values from tuneR_config).
 }
 \examples{
-configfile = system.file("tuneR_config.toml", package = "SIMIONtuner")
+configfile = system.file("tuneR_config.toml", package = "SIMIONtuneR")
 run_SIMIONtuner(configfile)
 
 }
