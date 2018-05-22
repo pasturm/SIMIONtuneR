@@ -1,7 +1,8 @@
 # Script to manually load workers on remote computers.
 #
-# - requires SIMION installation with identical copy of iob files on remote PC.
-# - The IP address of the master PC needs to be configured in parallellib_pst.lua .
+# - to be exectuted on the remote computer.
+# - requires SIMION installation with identical copy of iob files on remote computer.
+# - The IP address of the master computer needs to be configured in parallellib_pst.lua.
 # - remote workers need to be started before the master process starts.
 
 setwd("C:/Program Files/SIMION-8.1")

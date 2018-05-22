@@ -79,6 +79,15 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   controls = do.call(rbind.data.frame, c(config$controls, stringsAsFactors = FALSE))
   ncont = length(controls$Name)  # number of factors
 
+  # possibly overwrite start values with previous bestpoint_run.txt copied to tuneR_dir
+  if (file.exists(file.path(tuneR_dir,"bestpoint_run.txt"))) {
+    warning("Start values are taken from bestpoint_run.txt", immediate. = TRUE)
+    bestpoint_csv = read.csv(file.path(tuneR_dir,"bestpoint_run.txt"), stringsAsFactors = FALSE, sep = "|")
+    for (i in 2:(length(bestpoint_csv)-1)) {
+      controls$StartValue[controls$Name==names(bestpoint_csv)[i]] = as.numeric(bestpoint_csv[i])
+    }
+  }
+  
   # assign starting values of controls to a variable
   for (i in 1:ncont) {
     if (!is.na(controls$StartValue[i])) {
@@ -89,15 +98,6 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   # evaluate factor values
   for (i in 1:nfact0) {
     factors$Value[i] = eval(parse(text = factors$Transformation[i]))
-  }
-
-  # possibly overwrite factor values with previous bestpoint_run.txt copied to tuneR_dir
-  if (file.exists(file.path(tuneR_dir,"bestpoint_run.txt"))) {
-    warning("Start values are taken from bestpoint_run.txt", immediate. = TRUE)
-    bestpoint_csv = read.csv(file.path(tuneR_dir,"bestpoint_run.txt"), stringsAsFactors = FALSE, sep = "|")
-    for (i in 2:(length(bestpoint_csv)-1)) {
-      factors$Value[controls$Name==names(bestpoint_csv)[i]] = as.numeric(bestpoint_csv[i])
-    }
   }
 
   # formula names for rsm
