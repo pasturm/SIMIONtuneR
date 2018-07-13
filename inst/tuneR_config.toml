@@ -34,6 +34,7 @@ n_repeats = 10
 6 = { Name = "v_6",     Enabled = 0, Transformation = "V6",        Range = 20, LowLimit = -500, HighLimit = 500 }
 
 # Controls
+# Note: The control names need to be the parameters of runner.jobrun(i, ...) in the lua script.
 [controls]
 1 =  { Name = "V1", Transformation = "v_1",              StartValue = 20 }
 2 =  { Name = "V2", Transformation = "v_2",              StartValue = -40 }

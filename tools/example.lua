@@ -52,8 +52,8 @@ function runner.jobsetup()
 end
   
 -- Performs each run job. Worker runs this.
--- Note: The ... arguments of jobrun(i, ...) need to be all the controls 
--- defined in tuneR_config.toml (in the same order).
+-- Note: All controls defined in tuneR_config.toml need to be assigned 
+-- (in the same order) in jobrun(i, ...).
 function runner.jobrun(i,V1,V2,V3,V4,V5,V6)
   sim_trajectory_image_control = 3
 
