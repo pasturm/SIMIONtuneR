@@ -30,13 +30,11 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   if (!dir.exists(tuneR_dir)) { dir.create(tuneR_dir) }
 
   # set working directory to SIMION executable directory
-  setwd(config$simion_dir)
+  wd = setwd(config$simion_dir)
+  on.exit(setwd(wd), add = TRUE)
 
   # number of SIMION processes
   np = config$np
-  
-  # close zombie processes (if any)
-  # system(paste0("lua \"", dirname(iob), "/close_children.lua\""))
   
   # number of ions on detector per run
   n_ions = config$n_ions
@@ -53,6 +51,9 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
              wait = FALSE, show.output.on.console = FALSE)
     }
   }
+  
+  # close worker processes on exit
+  on.exit(system(paste0("lua \"", dirname(iob), "/close_children.lua\"")), add = TRUE)
   
   # loading and fast adjusting PAs might take some time -> make sure master runs
   # jobs only after all workers are ready.
@@ -318,9 +319,6 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   # end of loop
   }
 
-  # close worker processes
-  system(paste0("lua \"", dirname(iob), "/close_children.lua\""))
-  
 }
 
 # run_GLPMtuneR ----------------------------------------------------------------
@@ -352,6 +350,7 @@ run_GLPMtuneR = function(tuneR_config) {
   # Create np copies of R running in parallel
   cl = parallel::makeCluster(np)
   doParallel::registerDoParallel(cl)
+  on.exit(parallel::stopCluster(cl), add = TRUE)
   
   # Energy range for which time-of-flight variations are minimized
   range_E = config$range_E
@@ -589,5 +588,5 @@ run_GLPMtuneR = function(tuneR_config) {
     
     # end of loop
   }
-  parallel::stopCluster(cl)
+  
 }
