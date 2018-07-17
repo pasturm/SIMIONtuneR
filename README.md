@@ -15,10 +15,12 @@ A typical RSM optimization workflow includes:
 * Running the simulation with the optimized parameters to validate the model,
 * Generate a new Box-Behnken design with the optimized parameters as starting values, etc.
 
-The tuning parameters are configured in a [configuration file](https://github.com/pasturm/SIMIONtuneR/blob/master/inst/tuneR_config.toml)
+The tuning parameters are configured in a [configuration file](https://github.com/pasturm/SIMIONtuneR/blob/master/inst/SIMIONtuneR_config.toml)
 and the [lua script](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/example.lua)
 of the SIMION simulation needs to be adjusted accordingly.
 
+Additionally, the package provides functions to efficiently optimize the geometry and voltages of gridless planar
+mirrors (directly in R, since the axial potential of such mirrors can be calculated analytically). 
 
 ## Installation
 ```
@@ -31,16 +33,18 @@ See [NEWS](https://github.com/pasturm/SIMIONtuneR/blob/master/NEWS).
 
 
 ## Notes
-* This is currently very poorly documented. 
+* This is currently rather poorly documented. 
 * See [tools](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/)
 for additional files, which are required in the SIMION workbench directory.
-* Parallel processing is based on the ZeroMQ library, which is available on the SIMION
-update webpage.
-* Currently this only works for voltage optimization, but it might be extended to 
+* Parallel computing is used to speed up the optimization. Parallel processing for SIMION is based on the ZeroMQ library, which is available on the SIMION
+update webpage. 
+* Currently this only works for voltage optimization in SIMION, but it might be extended to 
 geometry optimization in the future.
 * The design of experiments and response surface method closely follows the approach 
 of the TOFWERK Thuner and underlying MKS MODDE-Q software. Notable differences to Thuner/MODDE are:
     * It is open source (+). 
-    * The response surface model optimization works much better (due to improved optimization algorithms and desirability functions) and is much easier to configure (+). 
+    * The response surface model optimization works much better (due to improved optimization algorithms and desirability functions) (+).
+    * The optimizaition is much easier to configure (+). 
     * It can be used to efficiently optimize SIMION simulations (+).
+    * It can also be used to optimize geometries where the potential can be calculated analytically (+). 
     * It is not a self-contained program and does not have a graphical user interface (-). 

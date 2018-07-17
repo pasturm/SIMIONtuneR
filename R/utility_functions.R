@@ -193,3 +193,160 @@ plot_results = function(pltly, k, n_steps, resultdir, result, runs, bestpoint_ru
   print(pltly)
   return(pltly)
 }
+
+# Axial potential --------------------------------------------------------------
+#' Calculates the axial potential of gridless planar mirrors.
+#'
+#' \code{potential} calculates the axial potential of gridless planar mirrors.
+#'
+#' @param x Axial distance from the end electrode.
+#' @param L Vector of electrode lengths normalized with H ("lenght"/\code{H}).
+#' @param V Vector of voltages normalized with the mean energy ("voltage"/K_0)
+#' @param H Height of the mirror electrodes (the same for all electrodes).
+#'
+#' @return Axial potential at \code{x}.
+#'
+#' @references Yavor, M.I. et al. (2018), High performance gridless ion mirrors 
+#' for multi-reflection time-of-flight and electrostatic trap mass analyzers, 
+#' \emph{International Journal of Mass Spectrometry}, \strong{426},
+#' 1-11, doi:10.1016/j.ijms.2018.01.009.
+#' 
+#' @keywords internal
+#' @export
+potential = function(x, L, V, H) {
+  a = L
+  b = L
+  n = length(L)
+  a[1] = 0
+  for (i in 1:(n-1)) {
+    a[i+1] = sum(L[1:i])*H
+  }
+  for (i in 1:n) {
+    b[i] = sum(L[1:i])*H
+  }
+  
+  Vx = 4*V[1]/pi*atan(exp(-pi*x/H)) 
+  for (i in 1:n) {
+    Vx = Vx + 2*V[i]/pi*(atan(exp(pi*(x-a[i])/H)) + atan(exp(pi*(x+a[i])/H))) -
+      2*V[i]/pi*(atan(exp(pi*(x-b[i])/H)) + atan(exp(pi*(x+b[i])/H)))
+  }
+  return(Vx)
+}
+
+# Inverse of axial potential ---------------------------------------------------
+#' Calculates the inverse of the axial potential function.
+#'
+#' \code{potential_inv} calculates the position x given the axial potential (inverse
+#' of axial potential function).
+#'
+#' The inverse of the axial potential function is used to calculate the turning 
+#' point inside the mirror for a given kinetic energy.
+#' 
+#' @param y Axial potential.
+#' @param L Vector of electrode lengths normalized with H ("lenght"/\code{H}).
+#' @param V Vector of voltages normalized with the mean energy ("voltage"/K_0)
+#' @param H Height of the mirror electrodes (the same for all electrodes).
+#'
+#' @return Position x where the axial potential = y.
+#' 
+#' @keywords internal
+#' @export
+potential_inv = function(y, L, V, H) {
+  uniroot((function(x,L,V,H) potential(x,L,V,H)-y), interval = c(0,100), L, V, H, tol = 1e-15)$root
+}
+
+# Integrand for tof period calculation -----------------------------------------
+#' Integrand for tof period calculation.
+#'
+#' \code{integrand} is the integrand for the time-of-flight period calculation.
+#' 
+#' @param x Axial distance from the end electrode.
+#' @param E Potential energy at the turning point (normalized with the mean 
+#' energy (K/K_0).
+#' @param L Vector of electrode lengths normalized with H ("lenght"/\code{H}).
+#' @param V Vector of voltages normalized with the mean energy ("voltage"/K_0)
+#' @param H Height of the mirror electrodes (the same for all electrodes).
+#'
+#' @return Axial potential at \code{x}.
+#' 
+#' @keywords internal
+#' @export
+integrand = function(x, E, L, V, H) {
+  
+  a = L
+  b = L
+  n = length(L)
+  a[1] = 0
+  for (i in 1:(n-1)) {
+    a[i+1] = sum(L[1:i])*H
+  }
+  for (i in 1:n) {
+    b[i] = sum(L[1:i])*H
+  }
+  Vx = 4*V[1]/pi*atan(exp(-pi*x/H)) 
+  for (i in 1:n) {
+    Vx = Vx + 2*V[i]/pi*(atan(exp(pi*(x-a[i])/H)) + atan(exp(pi*(x+a[i])/H))) -
+      2*V[i]/pi*(atan(exp(pi*(x-b[i])/H)) + atan(exp(pi*(x+b[i])/H)))
+  }
+  Vx = 1/sqrt(E - Vx)
+  
+  return(Vx)
+}
+
+# tof period -------------------------------------------------------------------
+#' Time-of-flight period calculation.
+#'
+#' \code{tofperiod} calculates the time-of-flight period inside the mirror.
+#' 
+#' This integrates the particle motion from the turning point x0 to the distance
+#' x1. Because here we are only interested in relative time-of-flight deviations
+#' all constant factors (e.g. \code{2*sqrt(2*m*amu/e)}) are omitted and the 
+#' time-of-flight is in arbitrary units.
+#' 
+#' @param E Vector of potential energies at the turning point (normalized with
+#' the mean energy (K/K_0).
+#' @param x1 End distance of the particle, typically the time-of-flight focal 
+#' point of the mirror.
+#' @param L Vector of electrode lengths normalized with H ("lenght"/\code{H}).
+#' @param V Vector of voltages normalized with the mean energy ("voltage"/K_0)
+#' @param H Height of the mirror electrodes (the same for all electrodes).
+#'
+#' @return time-of-flight.
+#' 
+#' @keywords internal
+#' @export
+tofperiod = function(E, x1, L, V, H) {
+  x0 = sapply(E, potential_inv, L, V, H)
+  tof = mapply(function(x0, x1, E) integrate(integrand, x0, x1, E, L, V, H, 
+                                             rel.tol = 1e-6)$value, x0, x1, E)
+  return(tof)
+}
+
+# tof focus point --------------------------------------------------------------
+#' Finds the time-of-flight focal point of the mirror.
+#'
+#' \code{find_x1} finds the time-of-flight focal point of the mirror.
+#' 
+#' @param L Vector of electrode lengths normalized with H ("lenght"/\code{H}).
+#' @param V Vector of voltages normalized with the mean energy ("voltage"/K_0)
+#' @param H Height of the mirror electrodes (the same for all electrodes).
+#'
+#' @return time-of-flight.
+#' 
+#' @keywords internal
+#' @export
+find_x1 = function(L, V, H) {
+  E = seq(0.99, 1.01, length.out = 2)
+  x1 = 3*H
+  dx = 10
+  repeat {
+    tmp = tofperiod(E = E, x1 = x1, L,V,H)
+    if (diff(tmp) < 0) {
+      x1 = x1 - dx
+      dx = dx/10
+    }
+    x1 = x1 + dx
+    if (dx < 1e-5) break
+  }
+  return(x1)
+}

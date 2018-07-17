@@ -1,0 +1,46 @@
+# GLPMtuneR configuration file
+
+# Number of processes for running R in parallel
+np = 4
+
+# Energy range (in % of mean energy) for which time-of-flight variations are minimized.
+# E.g. range_E = 10 means -5 % .. +5 %
+range_E = 10
+
+# Number of repetitions
+n_repeats = 10
+
+# Response variables
+[responses]
+1 = {Name = "Resolving power", Target = 10000, Weight = 1}
+
+# Factors
+# Note: between 3 and 7 factors need to be enabled
+[factors]
+1  = { Name = "v1", Enabled = 1, Transformation = "V1", Range = 0.02, LowLimit = 1, HighLimit = 1.5 }
+2  = { Name = "v2", Enabled = 0, Transformation = "V1*3/4", Range = 0.02, LowLimit = 0, HighLimit = 1.5 }
+3  = { Name = "v3", Enabled = 0, Transformation = "V1/2", Range = 0.02, LowLimit = 0, HighLimit = 1.5 }
+4  = { Name = "v4", Enabled = 0, Transformation = "V1/4", Range = 0.02, LowLimit = 0, HighLimit = 1.5 }
+5  = { Name = "v5", Enabled = 1, Transformation = "V5", Range = 0.02, LowLimit = -3, HighLimit = 0 }
+6  = { Name = "v6", Enabled = 0, Transformation = "V6", Range = 0.02, LowLimit = -3, HighLimit = 0 }
+7  = { Name = "l1", Enabled = 1, Transformation = "L1", Range = 0.02, LowLimit = 0, HighLimit = 10 }
+8  = { Name = "l2", Enabled = 1, Transformation = "L2", Range = 0.02, LowLimit = 0, HighLimit = 10 }
+9  = { Name = "l3", Enabled = 0, Transformation = "L2", Range = 0.02, LowLimit = 0, HighLimit = 10 }
+10 = { Name = "l4", Enabled = 0, Transformation = "L2", Range = 0.02, LowLimit = 0, HighLimit = 10 }
+11 = { Name = "l5", Enabled = 1, Transformation = "L5", Range = 0.02, LowLimit = 0, HighLimit = 10 }
+12 = { Name = "l6", Enabled = 0, Transformation = "L6", Range = 0.02, LowLimit = 0, HighLimit = 10 }
+
+# Controls
+[controls]
+1  = { Name = "V1", Transformation = "v1", StartValue = 1.2833333 }
+2  = { Name = "V2", Transformation = "v1*3/4", StartValue = 0 }
+3  = { Name = "V3", Transformation = "v1/2", StartValue = 0 }
+4  = { Name = "V4", Transformation = "v1/4", StartValue = 0 }
+5  = { Name = "V5", Transformation = "v5", StartValue = -2.4 }
+6  = { Name = "V6", Transformation = "v6", StartValue = 0 }
+7  = { Name = "L1", Transformation = "l1", StartValue = 0.7 }
+8  = { Name = "L2", Transformation = "l2", StartValue = 0.475 }
+9  = { Name = "L3", Transformation = "l2", StartValue = 0 }
+10 = { Name = "L4", Transformation = "l2", StartValue = 0 }
+11 = { Name = "L5", Transformation = "l5", StartValue = 0.38 }
+12 = { Name = "L6", Transformation = "l6", StartValue = 0 }

@@ -1,7 +1,10 @@
-SIMIONtuneR 0.1.0.902
+SIMIONtuneR 0.2.0
 --------------------------------------------------------------------------------
 
 * Various bug fixes.
+
+* Added functions which allow to optimize the geometry and voltages of gridless
+  planar mirror directly in R.
 
 
 SIMIONtuneR 0.1.0
