@@ -4,18 +4,27 @@
 \alias{run_GLPMtuneR}
 \title{Runs gridless planar mirror optimization.}
 \usage{
-run_GLPMtuneR(tuneR_config)
+run_GLPMtuneR(tuneR_config, resume = FALSE)
 }
 \arguments{
 \item{tuneR_config}{path and name of tuneR_config file (.toml)}
+
+\item{resume}{if \code{FALSE} (default) starting values are taken from the
+tuneR_config file, if \code{TRUE} starting values are taken from the last
+bestpoint_run.txt (see 'Details').}
 }
 \description{
 \code{run_GLPMtuneR} runs gridless planar mirror optimization.
 }
 \details{
 The experiment needs to be configured in a tuneR_config file (TOML file format).
-If you want to start from previous best point, copy bestpoint_run.txt to tuneR_dir
-(delete bestpoint.txt if you want to start with starting values from tuneR_config).
+See \code{system.file("GLPMtuneR_config.toml", package = "SIMIONtuneR")} for 
+a template.
+
+If you want to start from a previous best point, set \code{resume = TRUE}.
+If there is a bestpoint_run.txt file in the tuneR directory, the starting 
+values will be taken from there. Otherwise the latest bestpoint_run.txt from
+all subfolders of tuneR will be taken.
 }
 \examples{
 tuneR_config = system.file("GLPMtuneR_config.toml", package = "SIMIONtuneR")

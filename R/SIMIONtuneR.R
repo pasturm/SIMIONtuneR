@@ -4,8 +4,12 @@
 #' \code{run_SIMIONtuneR} runs SIMIONtuneR simulation.
 #'
 #' The experiment needs to be configured in a tuneR_config file (TOML file format).
-#' If you want to start from previous best point, copy bestpoint_run.txt to tuneR_dir
-#' (delete bestpoint.txt if you want to start with starting values from tuneR_config).
+#' See \code{system.file("SIMIONtuneR_config.toml", package = "SIMIONtuneR")} for 
+#' a template.
+#' 
+#' If you want to start from a previous best point, copy bestpoint_run.txt to 
+#' the tuneR directory (delete bestpoint_run.txt if you want to start with 
+#' starting values from tuneR_config).
 #'
 #' @param tuneR_config path and name of tuneR_config file (.toml)
 #' @param nogui run SIMION with --nogui option (\code{TRUE} (default) or \code{FALSE})
@@ -327,17 +331,25 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
 #' \code{run_GLPMtuneR} runs gridless planar mirror optimization.
 #'
 #' The experiment needs to be configured in a tuneR_config file (TOML file format).
-#' If you want to start from previous best point, copy bestpoint_run.txt to tuneR_dir
-#' (delete bestpoint.txt if you want to start with starting values from tuneR_config).
+#' See \code{system.file("GLPMtuneR_config.toml", package = "SIMIONtuneR")} for 
+#' a template.
+#' 
+#' If you want to start from a previous best point, set \code{resume = TRUE}.
+#' If there is a bestpoint_run.txt file in the tuneR directory, the starting 
+#' values will be taken from there. Otherwise the latest bestpoint_run.txt from
+#' all subfolders of tuneR will be taken.
 #'
 #' @param tuneR_config path and name of tuneR_config file (.toml)
+#' @param resume if \code{FALSE} (default) starting values are taken from the
+#' tuneR_config file, if \code{TRUE} starting values are taken from the last
+#' bestpoint_run.txt (see 'Details').
 #'
 #' @examples
 #' tuneR_config = system.file("GLPMtuneR_config.toml", package = "SIMIONtuneR")
 #' run_GLPMtuneR(tuneR_config)
 #'
 #' @export
-run_GLPMtuneR = function(tuneR_config) {
+run_GLPMtuneR = function(tuneR_config, resume = FALSE) {
   
   # configuration --------------------------------------------------------------
   
@@ -377,12 +389,16 @@ run_GLPMtuneR = function(tuneR_config) {
   controls = do.call(rbind.data.frame, c(config$controls, stringsAsFactors = FALSE))
   ncont = length(controls$Name)  # number of factors
   
-  # possibly overwrite start values with previous bestpoint_run.txt copied to tuneR_dir
-  if (file.exists(file.path(tuneR_dir,"bestpoint_run.txt"))) {
-    warning("Start values are taken from bestpoint_run.txt", immediate. = TRUE)
-    bestpoint_csv = read.csv(file.path(tuneR_dir,"bestpoint_run.txt"), stringsAsFactors = FALSE, sep = "|")
-    for (i in 2:(length(bestpoint_csv)-1)) {
-      controls$StartValue[controls$Name==names(bestpoint_csv)[i]] = as.numeric(bestpoint_csv[i])
+  # possibly overwrite start values with previous bestpoint_run.txt
+  if (resume) {
+    allfiles = list.files(tuneR_dir, pattern = "bestpoint_run.txt", full.names = TRUE, recursive = TRUE)
+    if (length(allfiles)>0) {
+      lastfile = allfiles[length(allfiles)]
+      warning(paste("Start values are taken from", lastfile), immediate. = TRUE)
+      bestpoint_csv = read.csv(lastfile, stringsAsFactors = FALSE, sep = "|")
+      for (i in 2:(length(bestpoint_csv)-1)) {
+        controls$StartValue[controls$Name==names(bestpoint_csv)[i]] = as.numeric(bestpoint_csv[i])
+      }
     }
   }
   
@@ -489,13 +505,13 @@ run_GLPMtuneR = function(tuneR_config) {
     
     # plot
     tmp = result[,!(names(result) %in% c("no", "res"))]
-    plot((E-1)*100, (tmp[1,]-tmp[1,floor(length(E)/2)])/tmp[1,floor(length(E)/2)]*1e6,
+    plot((E-1)*100, (tmp[1,]-tmp[1,ceiling(length(E)/2)])/tmp[1,ceiling(length(E)/2)]*1e6,
          type = "l", col = rgb(0,0,0,0.3), main = paste("Repeat", k),
          ylab = expression(paste(Delta,"tof/tof") ~ "/" ~ 10^{6}),
          xlab = expression(paste(Delta,"E/E") ~ "/"~ 100))
     grid()
     for (i in 2:length(tmp[,1])) {
-      lines((E-1)*100, (tmp[i,]-tmp[i,floor(length(E)/2)])/tmp[i,floor(length(E)/2)]*1e6, col = rgb(0,0,0,0.3))
+      lines((E-1)*100, (tmp[i,]-tmp[i,ceiling(length(E)/2)])/tmp[i,ceiling(length(E)/2)]*1e6, col = rgb(0,0,0,0.3))
     }
     
     result = result[c("no", "res")]
@@ -576,7 +592,7 @@ run_GLPMtuneR = function(tuneR_config) {
     tmp = tofperiod(E = E, x1 = x1, L, V, H)
     bestpoint_result$res = 1/sd(tmp)
     # plot
-    lines((E-1)*100, (tmp-tmp[floor(length(E)/2)])/tmp[floor(length(E)/2)]*1e6, col = rgb(1,0,0,1))
+    lines((E-1)*100, (tmp-tmp[ceiling(length(E)/2)])/tmp[ceiling(length(E)/2)]*1e6, col = rgb(1,0,0,1))
     
     
     write.table(signif(bestpoint_result, 12), file = file.path(tuneR_dir, resultdir, "bestpoint_results.txt"), sep = "|",
