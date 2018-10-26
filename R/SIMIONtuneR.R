@@ -35,7 +35,6 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
 
   # set working directory to SIMION executable directory
   wd = setwd(config$simion_dir)
-  on.exit(setwd(wd), add = TRUE)
 
   # number of SIMION processes
   np = config$np
@@ -58,6 +57,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   
   # close worker processes on exit
   on.exit(system(paste0("lua \"", dirname(iob), "/close_children.lua\"")), add = TRUE)
+  on.exit(setwd(wd), add = TRUE)  # restore working directory
   
   # loading and fast adjusting PAs might take some time -> make sure master runs
   # jobs only after all workers are ready.
