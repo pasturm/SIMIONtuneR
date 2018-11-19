@@ -1,7 +1,11 @@
-SIMIONtuneR 0.2.0.900
+SIMIONtuneR 0.2.1
 --------------------------------------------------------------------------------
 
 * No need to use forked rsm package any more. Using rsm from CRAN.
+
+* Bug fixes.
+
+* Using Travis CI.
 
 
 SIMIONtuneR 0.2.0

@@ -4,12 +4,14 @@
 \alias{plot_coeffs}
 \title{Plots the fit coefficients of the response surface model.}
 \usage{
-plot_coeffs(tuner_rsm, ylab = "")
+plot_coeffs(tuner_rsm, ylab = "", factors)
 }
 \arguments{
 \item{tuner_rsm}{Second order model fit.}
 
 \item{ylab}{y-axis label.}
+
+\item{factors}{Factors.}
 }
 \description{
 \code{plot_coeffs} generates a plot with the fit coefficients of the response

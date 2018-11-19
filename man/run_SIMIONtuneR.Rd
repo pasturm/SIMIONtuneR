@@ -24,7 +24,9 @@ the tuneR directory (delete bestpoint_run.txt if you want to start with
 starting values from tuneR_config).
 }
 \examples{
+\dontrun{
 tuneR_config = system.file("SIMIONtuneR_config.toml", package = "SIMIONtuneR")
 run_SIMIONtuner(tuneR_config)
+}
 
 }

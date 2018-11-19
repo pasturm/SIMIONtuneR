@@ -16,7 +16,7 @@ cost_function = function(y, rsm_output, nfact, xnam) {
     tmp[[i]] = paste0(xnam[i],"=y[",i,"]")
   }
   factors_coded = eval(parse(text = paste("data.frame(",paste(tmp, collapse = ","), ")")))
-  abs(predict(rsm_output, factors_coded))
+  abs(stats::predict(rsm_output, factors_coded))
 }
 
 # desirability -----------------------------------------------------------------
@@ -103,29 +103,31 @@ desirability_overall = function(factors, Target, w, nfact, xnam, tuner_rsm,
 #'
 #' @param tuner_rsm Second order model fit.
 #' @param ylab y-axis label.
+#' @param factors Factors.
 #'
 #' @keywords internal
 #' @export
-plot_coeffs = function(tuner_rsm, ylab = "") {
+plot_coeffs = function(tuner_rsm, ylab = "", factors) {
   m = length(tuner_rsm$coeff)
   coeffs = tuner_rsm$coeff[2:m]
   stderror = summary(tuner_rsm)$coeff[2:m,2]
-  confinterval = confint(tuner_rsm)[2:m,]
+  confinterval = stats::confint(tuner_rsm)[2:m,]
   ylim = 1.2*range(coeffs)
   labels = sapply(strsplit(names(coeffs), ")", fixed = TRUE), "[", 2)
+  nfact = length(factors$Name)
   for (i in 1:nfact) {
     labels = gsub(paste("x" ,i, sep = ""), factors$Name[i], labels)
   }
-  mp = barplot(coeffs, axes=FALSE, axisnames=FALSE, ylim = ylim,
+  mp = graphics::barplot(coeffs, axes=FALSE, axisnames=FALSE, ylim = ylim,
                main="Coefficients", xlab="", ylab=ylab,
                col = c(rep("blue", nfact), rep("darkgreen", sum(1:(nfact-1))), rep("red", nfact)))
-  axis(1, labels = labels, at = mp, cex.axis = 0.6, las = 2)
-  axis(2)
-  box()
+  graphics::axis(1, labels = labels, at = mp, cex.axis = 0.6, las = 2)
+  graphics::axis(2)
+  graphics::box()
   # error bars
-  segments(mp, confinterval[,1], mp, confinterval[,2])
-  segments(mp - 0.2, confinterval[,1], mp + 0.2, confinterval[,1])
-  segments(mp - 0.2, confinterval[,2], mp + 0.2, confinterval[,2])
+  graphics::segments(mp, confinterval[,1], mp, confinterval[,2])
+  graphics::segments(mp - 0.2, confinterval[,1], mp + 0.2, confinterval[,1])
+  graphics::segments(mp - 0.2, confinterval[,2], mp + 0.2, confinterval[,2])
 }
 
 # plot_results -----------------------------------------------------------------
@@ -252,7 +254,8 @@ potential = function(x, L, V, H) {
 #' @keywords internal
 #' @export
 potential_inv = function(y, L, V, H) {
-  uniroot((function(x,L,V,H) potential(x,L,V,H)-y), interval = c(0,100), L, V, H, tol = 1e-15)$root
+  stats::uniroot((function(x,L,V,H) potential(x,L,V,H)-y), interval = c(0,100), 
+                 L, V, H, tol = 1e-15)$root
 }
 
 # Integrand for tof period calculation -----------------------------------------
@@ -317,8 +320,8 @@ integrand = function(x, E, L, V, H) {
 #' @export
 tofperiod = function(E, x1, L, V, H) {
   x0 = sapply(E, potential_inv, L, V, H)
-  tof = mapply(function(x0, x1, E) integrate(integrand, x0, x1, E, L, V, H, 
-                                             rel.tol = 1e-6)$value, x0, x1, E)
+  tof = mapply(function(x0, x1, E) stats::integrate(integrand, x0, x1, E, L, V, H,
+                                                    rel.tol = 1e-6)$value, x0, x1, E)
   return(tof)
 }
 

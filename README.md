@@ -1,4 +1,6 @@
 # SIMIONtuneR
+[![Travis build status](https://travis-ci.org/pasturm/SIMIONtuneR.svg?branch=master)](https://travis-ci.org/pasturm/SIMIONtuneR)
+
 SIMION Parameter Tuning using Response Surface Methodology.
 
 The R package provides an interface to the ion optics simulation program 

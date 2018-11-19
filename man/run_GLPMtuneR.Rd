@@ -27,7 +27,9 @@ values will be taken from there. Otherwise the latest bestpoint_run.txt from
 all subfolders of tuneR will be taken.
 }
 \examples{
+\dontrun{
 tuneR_config = system.file("GLPMtuneR_config.toml", package = "SIMIONtuneR")
 run_GLPMtuneR(tuneR_config)
+}
 
 }
