@@ -25,13 +25,13 @@ Additionally, the package provides functions to efficiently optimize the geometr
 mirrors (directly in R, since the axial potential of such mirrors can be calculated analytically). 
 
 ## Installation
-```
+``` r
 if (!require("devtools")) { install.packages("devtools") }
 devtools::install_github("pasturm/SIMIONtuneR")
 ```
 
-## Version history
-See [NEWS](https://github.com/pasturm/SIMIONtuneR/blob/master/NEWS).
+## Release notes
+See the [NEWS file](https://github.com/pasturm/SIMIONtuneR/blob/master/NEWS.md) for the latest release notes.
 
 
 ## Notes
