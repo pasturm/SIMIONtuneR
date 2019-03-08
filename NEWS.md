@@ -1,3 +1,8 @@
+# Version 0.2.2
+
+* Moved non-SIMION related functions to another package.
+
+
 # Version 0.2.1
 
 * No need to use forked rsm package any more. Using rsm from CRAN.
@@ -8,8 +13,8 @@
 # Version 0.2.0
 
 * Various bug fixes.
-* Added functions which allow to optimize the geometry and voltages of gridless
-  planar mirror directly in R.
+* Added functions which allow to optimize the geometry and voltages of some ion
+  mirrors directly in R.
 
 
 # Version 0.1.0
