@@ -11,6 +11,6 @@ Description: The R package provides an interface to the ion optics simulation
 License: GPL-3
 URL: https://github.com/pasturm/SIMIONtuneR
 BugReports: https://github.com/pasturm/SIMIONtuneR/issues
-Imports: rsm, RcppTOML, plotly, gplots, foreach, doParallel
+Imports: rsm, RcppTOML, plotly, gplots
 Encoding: UTF-8
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
