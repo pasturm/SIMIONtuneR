@@ -1,6 +1,12 @@
+# Version 0.2.3
+
+* Added `write` parameter in `run_SIMIONtuner()` which (if `FALSE`) allows to 
+  run the optimization without writing output files to disk.
+
+
 # Version 0.2.2
 
-* Moved non-SIMION related functions to another package.
+* Moved non-SIMION related functions to another (imo) package.
 
 
 # Version 0.2.1

@@ -11,8 +11,9 @@
 #' the tuneR directory (delete bestpoint_run.txt if you want to start with 
 #' starting values from tuneR_config).
 #'
-#' @param tuneR_config path and name of tuneR_config file (.toml)
-#' @param nogui run SIMION with --nogui option (\code{TRUE} (default) or \code{FALSE})
+#' @param tuneR_config Path and name of tuneR_config file (.toml).
+#' @param nogui Run SIMION with --nogui option (\code{TRUE} (default) or \code{FALSE}).
+#' @param write Write output files (\code{TRUE} (default) or \code{FALSE}).
 #'
 #' @examples
 #' \dontrun{
@@ -21,7 +22,7 @@
 #' }
 #' 
 #' @export
-run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
+run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE) {
 
   # configuration --------------------------------------------------------------
 
@@ -155,7 +156,9 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   # run SIMION runs -----------------------------------------------------
   # make tuneR result directory
   resultdir = paste(timestring, formatC(k, width = 2, flag = "0"), sep="_")
-  dir.create(file.path(tuneR_dir, resultdir))
+  if (write) {
+    dir.create(file.path(tuneR_dir, resultdir))
+  }
 
   # bbd_data
   bbd_data = rsm::decode.data(design[,3:(3+nfact-1)])
@@ -179,8 +182,10 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
 
   utils::write.table(signif(runs, 12), file = file.path(tuneR_dir, "runs.txt"), 
                      sep = "|", row.names = FALSE, col.names = FALSE, eol = "|\n")
-  utils::write.table(signif(runs, 12), file = file.path(tuneR_dir, resultdir, "runs.txt"), 
-                     sep = "|", row.names = FALSE, col.names = TRUE, eol = "|\n")
+  if (write) {
+    utils::write.table(signif(runs, 12), file = file.path(tuneR_dir, resultdir, "runs.txt"), 
+                       sep = "|", row.names = FALSE, col.names = TRUE, eol = "|\n")
+  }
 
   print(paste0("Repeat ", k, ", run ", 1, " to ", length(runs[,1]),  " running..."))
   
@@ -209,7 +214,9 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
   result = result[order(result$no),]  # order
 
   # copy results.txt to resultsdir
-  file.copy(file.path(tuneR_dir, "results.txt"), file.path(tuneR_dir, resultdir, "results.txt"))
+  if (write) {
+    file.copy(file.path(tuneR_dir, "results.txt"), file.path(tuneR_dir, resultdir, "results.txt"))
+  }
   file.remove(file.path(tuneR_dir, "results.txt"))
   
   design$res = result$res
@@ -283,9 +290,11 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
 
   utils::write.table(signif(bestpoint_run, 12), file = file.path(tuneR_dir, "runs.txt"), 
                      sep = "|", row.names = FALSE, col.names = FALSE, eol = "|\n")
-  utils::write.table(signif(bestpoint_run, 12), 
-                     file = file.path(tuneR_dir, resultdir, "bestpoint_run.txt"), 
-                     sep = "|", row.names = FALSE, col.names = TRUE, eol = "|\n")
+  if (write) {
+    utils::write.table(signif(bestpoint_run, 12), 
+                       file = file.path(tuneR_dir, resultdir, "bestpoint_run.txt"), 
+                       sep = "|", row.names = FALSE, col.names = TRUE, eol = "|\n")
+  }
 
   # run simulation
   flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 ", 
@@ -303,8 +312,10 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
                                        sep = "|", col.names = c("no", "res", "sens"))
 
   # copy results.txt to resultsdir
-  file.copy(file.path(tuneR_dir, "results.txt"), 
-                 file.path(tuneR_dir, resultdir, "bestpoint_results.txt"))
+  if (write) {
+    file.copy(file.path(tuneR_dir, "results.txt"), 
+              file.path(tuneR_dir, resultdir, "bestpoint_results.txt"))
+  }
   file.remove(file.path(tuneR_dir, "results.txt"))
   file.remove(file.path(tuneR_dir, "runs.txt"))
 
@@ -320,8 +331,10 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE) {
                        responses$Name)
 
   # save all data as .RData
-  save(list = ls(all.names = TRUE), 
-       file = file.path(tuneR_dir, resultdir, "results.RData"))
+  if (write) {
+    save(list = ls(all.names = TRUE), 
+         file = file.path(tuneR_dir, resultdir, "results.RData"))
+  }
 
   # end of loop
   }

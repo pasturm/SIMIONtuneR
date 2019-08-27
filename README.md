@@ -23,9 +23,9 @@ and the [lua script](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/ex
 of the SIMION simulation needs to be adjusted accordingly.
 
 ## Installation
-``` r
-if (!require("devtools")) { install.packages("devtools") }
-devtools::install_github("pasturm/SIMIONtuneR")
+```r
+if (!require("remotes")) { install.packages("remotes") }
+remotes::install_github("pasturm/SIMIONtuneR")
 ```
 
 ## Release notes
@@ -41,6 +41,6 @@ for additional files, which are required in the SIMION workbench directory.
 * The design of experiments and response surface method closely follows the approach of the TOFWERK Thuner and underlying MKS MODDE-Q software. Notable differences to Thuner/MODDE are:
     * It is open source (+). 
     * The response surface model optimization works much better (due to improved optimization algorithms and desirability functions) (+).
-    * The optimizaition is much easier to configure (+). 
+    * The optimization is much easier to configure (+). 
     * It can be used to efficiently optimize SIMION simulations (+).
     * It is not a self-contained program and does not have a graphical user interface (-). 

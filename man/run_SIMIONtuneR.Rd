@@ -4,12 +4,14 @@
 \alias{run_SIMIONtuneR}
 \title{Runs SIMIONtuneR simulation.}
 \usage{
-run_SIMIONtuneR(tuneR_config, nogui = TRUE)
+run_SIMIONtuneR(tuneR_config, nogui = TRUE, write = TRUE)
 }
 \arguments{
-\item{tuneR_config}{path and name of tuneR_config file (.toml)}
+\item{tuneR_config}{Path and name of tuneR_config file (.toml).}
 
-\item{nogui}{run SIMION with --nogui option (\code{TRUE} (default) or \code{FALSE})}
+\item{nogui}{Run SIMION with --nogui option (\code{TRUE} (default) or \code{FALSE}).}
+
+\item{write}{Write output files (\code{TRUE} (default) or \code{FALSE}).}
 }
 \description{
 \code{run_SIMIONtuneR} runs SIMIONtuneR simulation.
