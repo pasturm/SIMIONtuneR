@@ -4,8 +4,18 @@
 \alias{plot_results}
 \title{Plots results.}
 \usage{
-plot_results(pltly, k, n_steps, resultdir, result, runs, bestpoint_run,
-  bestpoint_result, bestpoint_predicted, xylabel)
+plot_results(
+  pltly,
+  k,
+  n_steps,
+  resultdir,
+  result,
+  runs,
+  bestpoint_run,
+  bestpoint_result,
+  bestpoint_predicted,
+  xylabel
+)
 }
 \arguments{
 \item{pltly}{Plotly object.}

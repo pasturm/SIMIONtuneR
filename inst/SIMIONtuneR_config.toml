@@ -12,7 +12,6 @@ simion_dir = "C:/Program Files/SIMION-8.1"
 np = 4
 
 # Number of ions per run
-# Note: make sure "Num particles" in SIMION's fly2 file is > n_ions
 n_ions = 500
 
 # Number of repetitions

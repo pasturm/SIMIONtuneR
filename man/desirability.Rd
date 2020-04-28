@@ -4,8 +4,19 @@
 \alias{desirability}
 \title{Quadratic desirability function.}
 \usage{
-desirability(factors, Target, w, a, b, c, nfact, xnam, tuner_rsm, Pred_min,
-  Pred_max)
+desirability(
+  factors,
+  Target,
+  w,
+  a,
+  b,
+  c,
+  nfact,
+  xnam,
+  tuner_rsm,
+  Pred_min,
+  Pred_max
+)
 }
 \arguments{
 \item{factors}{Factors (tuning variables).}

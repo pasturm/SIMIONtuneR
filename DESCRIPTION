@@ -1,6 +1,6 @@
 Package: SIMIONtuneR
 Title: SIMION Parameter Tuning using Response Surface Methodology
-Version: 0.2.3
+Version: 0.2.4
 Authors@R: c(
   person("Patrick", "Sturm", role = c("aut", "cre"), 
           email = "sturm@tofwerk.com"),
@@ -13,4 +13,4 @@ URL: https://github.com/pasturm/SIMIONtuneR
 BugReports: https://github.com/pasturm/SIMIONtuneR/issues
 Imports: rsm, RcppTOML, plotly, gplots
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0

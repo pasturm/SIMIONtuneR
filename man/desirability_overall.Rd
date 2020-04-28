@@ -4,8 +4,16 @@
 \alias{desirability_overall}
 \title{Overall desirability function.}
 \usage{
-desirability_overall(factors, Target, w, nfact, xnam, tuner_rsm, Pred_min,
-  Pred_max)
+desirability_overall(
+  factors,
+  Target,
+  w,
+  nfact,
+  xnam,
+  tuner_rsm,
+  Pred_min,
+  Pred_max
+)
 }
 \arguments{
 \item{factors}{Factors (tuning variables).}

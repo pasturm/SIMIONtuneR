@@ -32,10 +32,11 @@ local LFS = require "lfs"
 -- Note: adjust master's IP address in library if it is not localhost.
 local PLIB = simion.import 'parallellib_pst.lua'
 
--- SIMIONtuneR variables. Do not change.
+-- SIMIONtuneR variables. *** DO NOT CHANGE ***
 adjustable master = 2  -- How this process runs: 0=worker, 1=master, 2=worker and master
 adjustable tuneR = 0  -- tuneR mode: 0="no", 1="yes"
 adjustable maxn = 1  -- maximum number of ions flown for each tuneR run
+adjustable zmq = 1  -- Use ZeroMQ library
 local tuneRdir = LFS.currentdir().."\\tuneR\\"  -- tuneR results directory
 
 -- Processing run jobs:
@@ -47,15 +48,19 @@ local runner = PLIB.runner()
 function runner.jobsetup()
   local file = assert(io.open(tuneRdir.."runs.txt"))
   for line in file:lines() do
-    runner:run(line)
+    if zmq==0 then
+  		runner:sp_run(line)
+  	else
+  		runner:run(line)
+  	end
   end
 end
   
 -- Performs each run job. Worker runs this.
 -- Note: All controls defined in tuneR_config.toml need to be assigned 
 -- (in the same order) in jobrun(i, ...).
+-- *** ADJUST THIS FUNCTION ***
 function runner.jobrun(i,V1,V2,V3,V4,V5,V6)
-  sim_trajectory_image_control = 3
 
   _extract_voltage = V1
   _lens1_voltage = V2
@@ -80,11 +85,21 @@ end
 
 
 function segment.flym()
-
   if tuneR==1 then
-    runner:process(master)
+    sim_trajectory_image_control = 3
+    if zmq==0 then
+			runner:sp_process(master)
+		else
+			runner:process(master)
+		end
   else
     run()
   end
+end
 
+
+function segment.terminate_run()
+  -- define the response variables here:
+  -- resolution = ...
+  -- sensitivity = ...
 end

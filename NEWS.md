@@ -1,6 +1,12 @@
+# Version 0.2.4
+
+* Added `zmq` parameter in `run_SIMIONtuneR()` which (if `FLASE`) allows to run
+  SIMION without the ZeroMQ messaging library, i.e. in single-process mode.
+
+
 # Version 0.2.3
 
-* Added `write` parameter in `run_SIMIONtuner()` which (if `FALSE`) allows to 
+* Added `write` parameter in `run_SIMIONtuneR()` which (if `FALSE`) allows to 
   run the optimization without writing output files to disk.
 
 

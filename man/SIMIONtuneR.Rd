@@ -3,7 +3,6 @@
 \docType{package}
 \name{SIMIONtuneR}
 \alias{SIMIONtuneR}
-\alias{SIMIONtuneR-package}
 \title{SIMION Parameter Tuning using Response Surface Methodology.}
 \description{
 The R package provides an interface to the ion optics simulation program

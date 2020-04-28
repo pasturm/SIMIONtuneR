@@ -5,13 +5,13 @@
  v2015-06-05
  
  adapted by Patrick Sturm (pst)
- (c) 2018 TOFWERK
+ (c) 2018-2020 TOFWERK
 --]]
 
 require "zmq"
 require "zmq.poller"
 
-local M = {_VERSION='v2018-04-24'}
+local M = {_VERSION='v2020-04-28'}
 
 local function get_context()
   local context = _G.zmq_context
@@ -171,7 +171,11 @@ function M.runner(master)
     end
   
     if o.is_master and o.jobsetup then
-      simion.sleep(5) -- pst: wait 5 s for remote workers to connect.
+      if MASTER_ADDRESS == "127.0.0.1" then
+        simion.sleep(1)
+      else
+        simion.sleep(10) -- pst: wait longer for remote workers to connect.
+      end
       o.jobsetup()
     end
 
@@ -212,11 +216,29 @@ function M.runner(master)
     o:close()
   end
   
+  -- pst: single-process run function (without ZeroMQ).
+  function o:sp_run(...)
+    local s = ...
+    njobs = njobs + 1
+    print('job', njobs, s)
+    local result = serialize(o.jobrun(unserialize(s)))
+    o.jobresult(unserialize(result))
+  end
+  
+  -- pst: single-process processing function (without ZeroMQ).
+  function o:sp_process(master)
+    o.jobsetup()
+  end
+  
   function o:close_children(runner)
     -- print 'closing'  -- pst: commented out
     local control = o.context:socket(zmq.PUB)
     control:bind(o.MASTER_PUBLISH)
-    simion.sleep(5)  -- pst: wait 5 s for remote workers to connect
+    if MASTER_ADDRESS == "127.0.0.1" then
+      simion.sleep(1)
+    else
+      simion.sleep(5) -- pst: wait longer for remote workers to connect.
+    end
     control:send('close_children')
     control:close()
   end
