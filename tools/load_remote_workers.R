@@ -11,8 +11,8 @@ n_ions = 300  # Number of ions per run
 iob = "C:/SIMION/test.iob"  # SIMION iob
 nogui = TRUE  # --nogui option
 
-flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 ", 
-                    "--adjustable master=0 --adjustable maxn=", n_ions)
+flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 ",
+                    "--adjustable master=0 --adjustable zmq=1 --adjustable maxn=", n_ions)
 
 for (i in seq_len(np)) {
   if (nogui) {

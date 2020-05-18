@@ -1,3 +1,9 @@
+# Version 0.2.5
+
+*  Added 'Getting Started' section to README with instructions on how to setup
+   SIMIONtuneR. 
+
+
 # Version 0.2.4
 
 * Added `zmq` parameter in `run_SIMIONtuneR()` which (if `FLASE`) allows to run
