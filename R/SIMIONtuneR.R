@@ -14,7 +14,7 @@
 #' @param tuneR_config Path and name of tuneR_config file (.toml).
 #' @param nogui Run SIMION with --nogui option (\code{TRUE} (default) or \code{FALSE}).
 #' @param write Write output files (\code{TRUE} (default) or \code{FALSE}).
-#' @param zmq Use the ZeroMQ library for parallel processing (\code{TRUE} (default) or \code{FALSE}).
+#' @param zmq Use the ZeroMQ library for parallel processing (\code{TRUE} or \code{FALSE} (default)).
 #'
 #' @examples
 #' \dontrun{
@@ -23,7 +23,7 @@
 #' }
 #' 
 #' @export
-run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = TRUE) {
+run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE) {
 
   # configuration --------------------------------------------------------------
 

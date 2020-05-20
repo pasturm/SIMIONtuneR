@@ -1,7 +1,12 @@
+# Version 0.3.0
+
+* Reorganized code so that SIMIONtuneR can be run without a ZeroMQ installation.
+
+
 # Version 0.2.5
 
-*  Added 'Getting Started' section to README with instructions on how to setup
-   SIMIONtuneR. 
+* Added 'Getting Started' section to README with instructions on how to setup
+  SIMIONtuneR. 
 
 
 # Version 0.2.4

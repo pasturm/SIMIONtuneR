@@ -10,7 +10,6 @@
 
 simion.workbench_program()
 
--- adjustable variables
 adjustable _entrance_voltage  = 30.5
 adjustable _exit_voltage      = 30
 adjustable _extract_voltage   = 20
@@ -20,85 +19,77 @@ adjustable _lens3_voltage     = -200
 adjustable _lens4_voltage     = -300
 adjustable _lens5_voltage     = -100
 
-
---------------------------------------------------------------------------------
--- SIMIONtuneR setup
---------------------------------------------------------------------------------
--- Load LuaFileSystem library.
-local LFS = require "lfs"
-
--- Load parallel processing library.
--- Note: adjust master's IP address in library if it is not localhost.
-local PLIB = simion.import 'parallellib_pst.lua'
-
--- SIMIONtuneR variables. *** DO NOT CHANGE ***
+-- SIMIONtuneR variables
+-- *** DO NOT CHANGE ***
 adjustable master = 2  -- How this process runs: 0=worker, 1=master, 2=worker and master
 adjustable tuneR = 0  -- tuneR mode: 0="no", 1="yes"
 adjustable maxn = 1  -- maximum number of ions flown for each tuneR run
-adjustable zmq = 1  -- Use ZeroMQ library
+adjustable zmq = 0  -- ZeroMQ library
+local LFS = require "lfs"  -- Load LuaFileSystem library.
 local tuneRdir = LFS.currentdir().."\\tuneR\\"  -- tuneR results directory
 
--- Processing run jobs:
-
--- Create runner.
-local runner = PLIB.runner()
-
--- Submits run jobs to workers. Master runs this.
-function runner.jobsetup()
-  local file = assert(io.open(tuneRdir.."runs.txt"))
-  for line in file:lines() do
-    if zmq==0 then
-  		runner:sp_run(line)
-  	else
-  		runner:run(line)
-  	end
-  end
-end
-  
--- Performs each run job. Worker runs this.
--- Note: All controls defined in tuneR_config.toml need to be assigned 
--- (in the same order) in jobrun(i, ...).
--- *** ADJUST THIS FUNCTION ***
-function runner.jobrun(i,V1,V2,V3,V4,V5,V6)
-
-  _extract_voltage = V1
-  _lens1_voltage = V2
-  _lens2_voltage = V3
-  _lens3_voltage = V4
-  _lens4_voltage = V5
-  _lens5_voltage = V6
-  
-  run()
-
-  -- Resolution and sensitivity are the responses to optimize (e.g. defined in segment.terminate_run())
-  return i,resolution,sensitivity
-end
-
--- Processes each run job result from worker. Master runs this.
-function runner.jobresult(run_no,resolution,sensitivity)
-  fp = assert(io.open(tuneRdir.."results.txt","a+")) 
-  fp:write(string.format("%i|%.3f|%.6f\n", run_no, resolution or 0, sensitivity))
-  io.close(fp)
-end
---------------------------------------------------------------------------------
--- end of SIMIONtuneR setup
---------------------------------------------------------------------------------
-
-
+-- SIMION segment.flym() function.
 function segment.flym()
+  
+  -- SIMIONtuneR code
   if tuneR==1 then
+    
+    -- load processing library
+    local PLIB
+    if zmq==1 then
+    	PLIB = simion.import 'parallellib_pst.lua'
+    	-- Note: adjust master's IP address in parallellib_pst.lua if it is not localhost.
+    else
+    	PLIB = simion.import 'singlelib_pst.lua'
+    end
+  
+    -- Create runner.
+    local runner = PLIB.runner()
+    
+    -- *** TO BE ADJUSTED ***
+    -- All controls defined in SIMIONtuneR_config.toml need to be assigned 
+    -- (in the same order) in jobrun(i, ...).
+    function runner.jobrun(i,V1,V2,V3,V4,V5,V6)
+    
+      _extract_voltage = V1
+      _lens1_voltage = V2
+      _lens2_voltage = V3
+      _lens3_voltage = V4
+      _lens4_voltage = V5
+      _lens5_voltage = V6
+      
+      run()
+    
+      -- Resolution and sensitivity are the responses to optimize (e.g. defined in segment.terminate_run())
+      return i,resolution,sensitivity
+    end
+    
+    -- Submit run jobs.
+    function runner.jobsetup()
+      local file = assert(io.open(tuneRdir.."runs.txt"))
+      for line in file:lines() do
+      	runner:run(line)
+      end
+    end
+    
+    -- Processe each run job result.
+    function runner.jobresult(run_no,resolution,sensitivity)
+      fp = assert(io.open(tuneRdir.."results.txt","a+")) 
+      fp:write(string.format("%i|%.3f|%.6f\n", run_no, resolution or 0, sensitivity))
+      io.close(fp)
+    end
+    
     sim_trajectory_image_control = 3
-    if zmq==0 then
-			runner:sp_process(master)
-		else
-			runner:process(master)
-		end
-  else
+    
+    runner:process(master)
+
+  else  -- tuneR==0
     run()
   end
+  
 end
 
-
+-- SIMION terminate_run() function.
 function segment.terminate_run()
   -- define the response variables here:
   -- resolution = ...

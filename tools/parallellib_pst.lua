@@ -216,20 +216,6 @@ function M.runner(master)
     o:close()
   end
   
-  -- pst: single-process run function (without ZeroMQ).
-  function o:sp_run(...)
-    local s = ...
-    njobs = njobs + 1
-    print('job', njobs, s)
-    local result = serialize(o.jobrun(unserialize(s)))
-    o.jobresult(unserialize(result))
-  end
-  
-  -- pst: single-process processing function (without ZeroMQ).
-  function o:sp_process(master)
-    o.jobsetup()
-  end
-  
   function o:close_children(runner)
     -- print 'closing'  -- pst: commented out
     local control = o.context:socket(zmq.PUB)

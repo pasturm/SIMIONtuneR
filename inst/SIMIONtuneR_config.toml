@@ -4,11 +4,10 @@
 iob = "C:/Users/pst/SIMION/test.iob"
 
 # SIMION executable directory (use forward slash or double backslash)
-simion_dir = "C:/Program Files/SIMION-8.1"
+simion_dir = "C:/Program Files/SIMION-8.2"
 
-# Number of processes on localhost for running SIMION in parallel
-# Notes: - maximum might be limited by available RAM, not by available cores
-#        - additional SIMION instances on remote computers can be opened manually
+# Number of processes for running SIMION in parallel
+# (Maximum might be limited by available RAM, not by available cores)
 np = 4
 
 # Number of ions per run
@@ -23,7 +22,7 @@ n_repeats = 10
 2 = {Name = "Sensitivity",     Target = 1,     Weight = 1}
 
 # Factors
-# Note: between 3 and 7 factors need to be enabled
+# (Between 3 and 7 factors need to be enabled)
 [factors]
 1 = { Name = "v_1",     Enabled = 1, Transformation = "V1",        Range = 10, LowLimit = -500, HighLimit = 500 }
 2 = { Name = "v_2",     Enabled = 1, Transformation = "V2",        Range = 20, LowLimit = -500, HighLimit = 500 }
@@ -33,8 +32,8 @@ n_repeats = 10
 6 = { Name = "v_6",     Enabled = 0, Transformation = "V6",        Range = 20, LowLimit = -500, HighLimit = 500 }
 
 # Controls
-# Note: The control names need to be the parameters of runner.jobrun(i, ...) function
-# in the lua workbench program.
+# (The control names need to be the parameters of the runner.jobrun(i, ...)
+# functionin the lua workbench program)
 [controls]
 1 =  { Name = "V1", Transformation = "v_1",              StartValue = 20 }
 2 =  { Name = "V2", Transformation = "v_2",              StartValue = -40 }

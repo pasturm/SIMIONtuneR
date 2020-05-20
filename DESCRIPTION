@@ -1,6 +1,6 @@
 Package: SIMIONtuneR
 Title: SIMION Parameter Tuning using Response Surface Methodology
-Version: 0.2.5
+Version: 0.3.0
 Authors@R: c(
   person("Patrick", "Sturm", role = c("aut", "cre"), 
           email = "sturm@tofwerk.com"),
