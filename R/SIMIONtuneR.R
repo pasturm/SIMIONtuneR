@@ -47,6 +47,10 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
   n_ions = config$n_ions
   
   if (zmq) {
+    # check if zmq is installed
+    if (system(paste("simion  --nogui --quiet --lua \"require 'zmq'\""), ignore.stdout = TRUE) != 0) {
+      stop("ZeroMQ library not found.")
+    }
     # open worker processes
     flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 ", 
                         "--adjustable master=0 --adjustable zmq=1 --adjustable maxn=", n_ions)
