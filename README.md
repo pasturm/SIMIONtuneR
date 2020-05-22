@@ -44,9 +44,7 @@ remotes::install_github("pasturm/SIMIONtuneR")
 
 ### Required SIMION files
 
-1.  Copy the following files to your SIMION workbench directory:
-    *   [master.iob](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/master.iob) 
-    *   [singlelib_pst.lua](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/singlelib_pst.lua)  
+1.  Copy [singlelib_pst.lua](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/singlelib_pst.lua) to your SIMION workbench directory.
 1.  Edit your workbench user program with the code from
     [example.lua](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/example.lua):
     *   Add the `-- SIMIONtuneR variables` to your workbench user program.
@@ -58,7 +56,7 @@ remotes::install_github("pasturm/SIMIONtuneR")
     
 ### Configuration file
 
-The parameters for tuning and for the communication between SIMION and R are 
+The parameters for tuning and for communicating between SIMION and R are 
 configured in a configuration file (TOML file format).
 For example, open [SIMIONtuneR_config.toml](https://github.com/pasturm/SIMIONtuneR/blob/master/inst/SIMIONtuneR_config.toml) and adjust the parameters according to your needs. In particular, the path name of the SIMION
 workbench file, and the factors and controls sections needs to be adjusted.
@@ -69,7 +67,7 @@ The names of the controls need to be the same as the parameters of the
 
 ```r
 library(SIMIONtuneR)
-run_SIMIONtuneR("my_SIMIONtuneR_config.toml")
+run_SIMIONtuneR("SIMIONtuneR_config.toml")
 ```
 
 The tuning results are plotted using [plotly](https://plotly.com/r/) and the 
@@ -95,6 +93,7 @@ from the SIMION update webpage and copy `vcomp140.dll` to your lib folder.
 Restart SIMION. If successful, entering `require "zmq"` into the SIMION command 
 bar should execute without error (status OK). 
 1.  Copy the following files to your SIMION workbench directory:
+    *   [master.iob](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/master.iob)
     *   [parallellib_pst.lua](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/parallellib_pst.lua)  
     *   [close_children.lua](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/close_children.lua) 
 1. Adjust the `np` parameter in the configuration file. It defines the 

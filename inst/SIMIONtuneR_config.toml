@@ -6,7 +6,7 @@ iob = "C:/Users/pst/SIMION/test.iob"
 # SIMION executable directory (use forward slash or double backslash)
 simion_dir = "C:/Program Files/SIMION-8.2"
 
-# Number of processes for running SIMION in parallel
+# Number of processes (if run with "zmq = TRUE")
 # (Maximum might be limited by available RAM, not by available cores)
 np = 4
 

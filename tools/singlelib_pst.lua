@@ -106,7 +106,7 @@ function M.runner(master)
   function o:run(...)
     local s = ...
     njobs = njobs + 1
-    print('job', njobs, s)
+    print('job', s)
     local result = serialize(o.jobrun(unserialize(s)))
     o.jobresult(unserialize(result))
   end
