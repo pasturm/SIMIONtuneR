@@ -23,7 +23,6 @@ adjustable _lens5_voltage     = -100
 -- *** DO NOT CHANGE ***
 adjustable master = 2  -- How this process runs: 0=worker, 1=master, 2=worker and master
 adjustable tuneR = 0  -- tuneR mode: 0="no", 1="yes"
-adjustable maxn = 1  -- maximum number of ions flown for each tuneR run
 adjustable zmq = 0  -- ZeroMQ library
 local LFS = require "lfs"  -- Load LuaFileSystem library.
 local tuneRdir = LFS.currentdir().."\\tuneR\\"  -- tuneR results directory

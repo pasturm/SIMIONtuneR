@@ -1,3 +1,12 @@
+# Version 0.3.1
+
+* The path of the SIMION workbench file can be given relative to the path of the
+  configuration file.
+  
+* Removed the `n_ions` variable in the configuration file. The number of ions 
+  can be configured in SIMION's fly2 file.
+
+
 # Version 0.3.0
 
 * Reorganized code so that SIMIONtuneR can be run without a ZeroMQ installation.

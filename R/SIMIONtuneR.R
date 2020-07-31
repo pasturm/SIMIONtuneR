@@ -30,8 +30,10 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
   # load config file
   config = RcppTOML::parseTOML(tuneR_config)
 
-  # iob file path and name
-  iob = config$iob
+  # iob file
+  wd = setwd(dirname(tuneR_config))
+  iob = normalizePath(config$iob)
+  setwd(wd)
 
   # tuner result path
   tuneR_dir = file.path(dirname(iob), "tuneR")
@@ -43,9 +45,6 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
   # number of SIMION processes
   np = config$np
   
-  # number of ions on detector per run
-  n_ions = config$n_ions
-  
   if (zmq) {
     # check if zmq is installed
     if (system(paste("simion  --nogui --quiet --lua \"require 'zmq'\""), ignore.stdout = TRUE) != 0) {
@@ -53,7 +52,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
     }
     # open worker processes
     flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 ", 
-                        "--adjustable master=0 --adjustable zmq=1 --adjustable maxn=", n_ions)
+                        "--adjustable master=0 --adjustable zmq=1")
     for (i in seq_len(np)) {
       if (nogui) {
         system(paste("simion --nogui --quiet fly", flyoptions, iob), 
@@ -199,7 +198,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
   # run simulations
   if (zmq) {
     flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 ",
-                        "--adjustable master=1 --adjustable zmq=1 --adjustable maxn=", n_ions)
+                        "--adjustable master=1 --adjustable zmq=1")
     if (nogui) {
       system(paste("simion --nogui --quiet fly", flyoptions, 
                    file.path(dirname(iob), "master.iob")), show.output.on.console = FALSE)
@@ -210,7 +209,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
     Sys.sleep(1)  # make sure all results are written before program resumes.
   } else {
     flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 --remove-pas=0 ",
-                        "--adjustable master=1 --adjustable zmq=0 --adjustable maxn=", n_ions)
+                        "--adjustable master=1 --adjustable zmq=0")
     if (nogui) {
       system(paste("simion --nogui --quiet fly", flyoptions, iob), 
              show.output.on.console = FALSE)
@@ -317,7 +316,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
   # run simulation
   if (zmq) {
     flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 ", 
-                        "--adjustable master=1 --adjustable zmq=1 --adjustable maxn=", n_ions)
+                        "--adjustable master=1 --adjustable zmq=1")
     if (nogui) {
       system(paste("simion --nogui --quiet fly", flyoptions, 
                    file.path(dirname(iob), "master.iob")), show.output.on.console = FALSE)
@@ -327,7 +326,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
     }
   } else {
     flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 --remove-pas=0 ", 
-                        "--adjustable master=2 --adjustable zmq=0 --adjustable maxn=", n_ions)
+                        "--adjustable master=2 --adjustable zmq=0")
     if (nogui) {
       system(paste("simion --nogui --quiet fly", flyoptions, iob), show.output.on.console = FALSE)
     } else {

@@ -57,8 +57,8 @@ remotes::install_github("pasturm/SIMIONtuneR")
 ### Configuration file
 
 The parameters for tuning and for communicating between SIMION and R are 
-configured in a configuration file (TOML file format).
-For example, open [SIMIONtuneR_config.toml](https://github.com/pasturm/SIMIONtuneR/blob/master/inst/SIMIONtuneR_config.toml) and adjust the parameters according to your needs. In particular, the path name of the SIMION
+configured in a configuration file.
+For example, open [SIMIONtuneR_config.toml](https://github.com/pasturm/SIMIONtuneR/blob/master/inst/SIMIONtuneR_config.toml) and adjust the parameters according to your needs. In particular, the name of the SIMION
 workbench file, and the factors and controls sections needs to be adjusted.
 The names of the controls need to be the same as the parameters of the
 `runner.jobrun(i, ...)` function in the lua workbench user program.
@@ -83,7 +83,7 @@ corresponding bestpoint_run.txt to the tuneR directory.
 ### Parallel Processing
 
 Parallel computing can be used to speed up the optimization. This is based on 
-the ZeroMQ library. 
+the ZeroMQ library.
 
 1.   Add the ZeroMQ library to your SIMION installation.
 Download `simion-lib-multiplatform-20140611b.zip` from the SIMION update webpage, 
@@ -99,11 +99,14 @@ bar should execute without error (status OK).
 1. Adjust the `np` parameter in the configuration file. It defines the 
 number of SIMION processes that will be run in parallel. Note that the number of
 processes which make sense to run is often limited by the available RAM rather
-by the number of cores. 
+by the number of available cores. 
 1. The script [load_remote_workers.R](https://github.com/pasturm/SIMIONtuneR/blob/master/tools/load_remote_workers.R)
 shows how additional SIMION instances can be used on remote computers (optional).
-1. SIMIONtuneR can then be run in parallel process mode with the ZeroMQ library
+1. SIMIONtuneR can then be run in parallel processing mode
 using `run_SIMIONtuneR(..., zmq = TRUE)`.
+
+Note that if only relatively few ions are flown and if small potential arrays 
+are used then `zmq = FALSE` might still be faster over all.
 
 ## Release notes
 See the [NEWS file](https://github.com/pasturm/SIMIONtuneR/blob/master/NEWS.md) for the latest release notes.

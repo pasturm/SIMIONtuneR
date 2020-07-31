@@ -1,17 +1,14 @@
 # SIMIONtuneR configuration file
 
-# SIMION iob name, incl. path (use forward slash or double backslash)
-iob = "C:/Users/pst/SIMION/test.iob"
+# SIMION workbench file (absolute path or path relative to this config file,
+# use forward slash or double backslash separators)
+iob = "test.iob"
 
-# SIMION executable directory (use forward slash or double backslash)
+# SIMION executable directory 
 simion_dir = "C:/Program Files/SIMION-8.2"
 
-# Number of processes (if run with "zmq = TRUE")
-# (Maximum might be limited by available RAM, not by available cores)
+# Number of processes (only used if run with "zmq = TRUE")
 np = 4
-
-# Number of ions per run
-n_ions = 500
 
 # Number of repetitions
 n_repeats = 10
@@ -33,7 +30,7 @@ n_repeats = 10
 
 # Controls
 # (The control names need to be the parameters of the runner.jobrun(i, ...)
-# functionin the lua workbench program)
+# function in the workbench lua program)
 [controls]
 1 =  { Name = "V1", Transformation = "v_1",              StartValue = 20 }
 2 =  { Name = "V2", Transformation = "v_2",              StartValue = -40 }
