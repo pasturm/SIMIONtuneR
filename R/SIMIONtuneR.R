@@ -193,7 +193,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
                        sep = "|", row.names = FALSE, col.names = TRUE, eol = "|\n")
   }
 
-  print(paste0("Repeat ", k, ", run ", 1, " to ", length(runs[,1]),  " running..."))
+  print(paste0("Repeat ", k, ", experiment ", 1, " to ", length(runs[,1]),  " running..."))
   
   # run simulations
   if (zmq) {
@@ -301,9 +301,9 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
                                                error = function(e) controls$StartValue[i])
   }
 
-  # run experiment
-  print(paste(paste0("Best point verification run:"),
-              paste0(names(bestpoint_run), "=", round(bestpoint_run,2), collapse = ", ")))
+  result_string = bestpoint_run[2:length(bestpoint_run)]
+  print(paste0("Best point: ", paste0(names(result_string), "=", 
+                                      round(result_string, 2), collapse = " | ")))
 
   utils::write.table(signif(bestpoint_run, 12), file = file.path(tuneR_dir, "runs.txt"), 
                      sep = "|", row.names = FALSE, col.names = FALSE, eol = "|\n")
