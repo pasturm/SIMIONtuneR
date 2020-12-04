@@ -1,6 +1,8 @@
 # R package: SIMIONtuneR
-[![Travis build status](https://travis-ci.org/pasturm/SIMIONtuneR.svg?branch=master)](https://travis-ci.org/pasturm/SIMIONtuneR)
+<!-- badges: start -->
+[![R build status](https://github.com/pasturm/SIMIONtuneR/workflows/R-CMD-check/badge.svg)](https://github.com/pasturm/SIMIONtuneR/actions)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+<!-- badges: end -->
 
 # SIMION Parameter Tuning using Response Surface Methodology
 

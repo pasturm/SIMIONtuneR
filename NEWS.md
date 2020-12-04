@@ -1,3 +1,10 @@
+# Version 0.3.2
+
+* Log messages adjusted.
+
+* Using GitHub Actions instead of Travis CI for continuous integration. 
+
+
 # Version 0.3.1
 
 * The path of the SIMION workbench file can be given relative to the path of the
