@@ -15,6 +15,9 @@ run_SIMIONtuneR(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE)
 
 \item{zmq}{Use the ZeroMQ library for parallel processing (\code{TRUE} or \code{FALSE} (default)).}
 }
+\value{
+A data.frame containing the optimized best points from the last run.
+}
 \description{
 \code{run_SIMIONtuneR} runs SIMIONtuneR simulation.
 }

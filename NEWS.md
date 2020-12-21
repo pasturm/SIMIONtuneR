@@ -1,3 +1,8 @@
+# Version 0.3.2.9000
+
+* `run_SIMIONtuneR()` returns the optimized best point of the last run.
+
+
 # Version 0.3.2
 
 * Log messages adjusted.

@@ -16,6 +16,8 @@
 #' @param write Write output files (\code{TRUE} (default) or \code{FALSE}).
 #' @param zmq Use the ZeroMQ library for parallel processing (\code{TRUE} or \code{FALSE} (default)).
 #'
+#' @return A data.frame containing the optimized best points from the last run. 
+#'
 #' @examples
 #' \dontrun{
 #' tuneR_config = system.file("SIMIONtuneR_config.toml", package = "SIMIONtuneR")
@@ -365,5 +367,6 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
 
   # end of loop
   }
+  return(bestpoint_run)
 
 }
