@@ -1,6 +1,9 @@
-# Version 0.3.2.9000
+# Version 0.3.2.9001
 
 * `run_SIMIONtuneR()` returns the optimized best point of the last run.
+
+* Added `resume` parameter in `run_SIMIONtuneR()` which (if `TRUE`) takes the 
+  starting values from the last best point optimization.
 
 
 # Version 0.3.2

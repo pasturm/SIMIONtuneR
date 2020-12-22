@@ -7,14 +7,18 @@
 #' See \code{system.file("SIMIONtuneR_config.toml", package = "SIMIONtuneR")} for 
 #' a template.
 #' 
-#' If you want to start from a previous best point, copy bestpoint_run.txt to 
-#' the tuneR directory (delete bestpoint_run.txt if you want to start with 
-#' starting values from tuneR_config).
+#' If you want to start from a previous best point, set \code{resume = TRUE}.
+#' If there is a bestpoint_run.txt file in the tuneR directory, the starting 
+#' values will be taken from there. Otherwise the latest bestpoint_run.txt from
+#' all subfolders of tuneR will be taken.
 #'
 #' @param tuneR_config Path and name of tuneR_config file (.toml).
 #' @param nogui Run SIMION with --nogui option (\code{TRUE} (default) or \code{FALSE}).
 #' @param write Write output files (\code{TRUE} (default) or \code{FALSE}).
 #' @param zmq Use the ZeroMQ library for parallel processing (\code{TRUE} or \code{FALSE} (default)).
+#' @param resume if \code{FALSE} (default) starting values are taken from the
+#' tuneR_config file, if \code{TRUE} starting values are taken from the last
+#' bestpoint_run.txt (see 'Details').
 #'
 #' @return A data.frame containing the optimized best points from the last run. 
 #'
@@ -25,7 +29,8 @@
 #' }
 #' 
 #' @export
-run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE) {
+run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, 
+                           zmq = FALSE, resume = FALSE) {
 
   # configuration --------------------------------------------------------------
 
@@ -95,13 +100,17 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
   # controls with start values
   controls = do.call(rbind.data.frame, c(config$controls, stringsAsFactors = FALSE))
   ncont = length(controls$Name)  # number of factors
-
-  # possibly overwrite start values with previous bestpoint_run.txt copied to tuneR_dir
-  if (file.exists(file.path(tuneR_dir,"bestpoint_run.txt"))) {
-    warning("Start values are taken from bestpoint_run.txt", immediate. = TRUE)
-    bestpoint_csv = utils::read.csv(file.path(tuneR_dir,"bestpoint_run.txt"), stringsAsFactors = FALSE, sep = "|")
-    for (i in 2:(length(bestpoint_csv)-1)) {
-      controls$StartValue[controls$Name==names(bestpoint_csv)[i]] = as.numeric(bestpoint_csv[i])
+  
+  # possibly overwrite start values with previous bestpoint_run.txt
+  if (resume) {
+    allfiles = list.files(tuneR_dir, pattern = "bestpoint_run.txt", full.names = TRUE, recursive = TRUE)
+    if (length(allfiles)>0) {
+      lastfile = allfiles[length(allfiles)]
+      warning(paste("Start values are taken from", lastfile), immediate. = TRUE)
+      bestpoint_csv = utils::read.csv(lastfile, stringsAsFactors = FALSE, sep = "|")
+      for (i in 2:(length(bestpoint_csv)-1)) {
+        controls$StartValue[controls$Name==names(bestpoint_csv)[i]] = as.numeric(bestpoint_csv[i])
+      }
     }
   }
   
@@ -345,7 +354,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE
     file.copy(file.path(tuneR_dir, "results.txt"), 
               file.path(tuneR_dir, resultdir, "bestpoint_results.txt"))
   }
-  file.remove(file.path(tuneR_dir, "results.txt"))
+  file.rename(file.path(tuneR_dir, "results.txt"), file.path(tuneR_dir, "bestpoint_results.txt"))
   file.remove(file.path(tuneR_dir, "runs.txt"))
 
   # plot results ---------------------------------------------------------------

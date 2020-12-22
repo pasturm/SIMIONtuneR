@@ -4,7 +4,13 @@
 \alias{run_SIMIONtuneR}
 \title{Runs SIMIONtuneR simulation.}
 \usage{
-run_SIMIONtuneR(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE)
+run_SIMIONtuneR(
+  tuneR_config,
+  nogui = TRUE,
+  write = TRUE,
+  zmq = FALSE,
+  resume = FALSE
+)
 }
 \arguments{
 \item{tuneR_config}{Path and name of tuneR_config file (.toml).}
@@ -14,6 +20,10 @@ run_SIMIONtuneR(tuneR_config, nogui = TRUE, write = TRUE, zmq = FALSE)
 \item{write}{Write output files (\code{TRUE} (default) or \code{FALSE}).}
 
 \item{zmq}{Use the ZeroMQ library for parallel processing (\code{TRUE} or \code{FALSE} (default)).}
+
+\item{resume}{if \code{FALSE} (default) starting values are taken from the
+tuneR_config file, if \code{TRUE} starting values are taken from the last
+bestpoint_run.txt (see 'Details').}
 }
 \value{
 A data.frame containing the optimized best points from the last run.
@@ -26,9 +36,10 @@ The experiment needs to be configured in a tuneR_config file (TOML file format).
 See \code{system.file("SIMIONtuneR_config.toml", package = "SIMIONtuneR")} for 
 a template.
 
-If you want to start from a previous best point, copy bestpoint_run.txt to 
-the tuneR directory (delete bestpoint_run.txt if you want to start with 
-starting values from tuneR_config).
+If you want to start from a previous best point, set \code{resume = TRUE}.
+If there is a bestpoint_run.txt file in the tuneR directory, the starting 
+values will be taken from there. Otherwise the latest bestpoint_run.txt from
+all subfolders of tuneR will be taken.
 }
 \examples{
 \dontrun{
