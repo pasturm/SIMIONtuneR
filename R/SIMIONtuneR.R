@@ -16,9 +16,11 @@
 #' @param nogui Run SIMION with --nogui option (\code{TRUE} (default) or \code{FALSE}).
 #' @param write Write output files (\code{TRUE} (default) or \code{FALSE}).
 #' @param zmq Use the ZeroMQ library for parallel processing (\code{TRUE} or \code{FALSE} (default)).
-#' @param resume if \code{FALSE} (default) starting values are taken from the
+#' @param resume If \code{FALSE} (default) starting values are taken from the
 #' tuneR_config file, if \code{TRUE} starting values are taken from the last
 #' bestpoint_run.txt (see 'Details').
+#' @param digits Controls the number of decimal places to print when
+#' printing the best point values.
 #'
 #' @return A data.frame containing the optimized best points from the last run. 
 #'
@@ -30,7 +32,7 @@
 #' 
 #' @export
 run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE, 
-                           zmq = FALSE, resume = FALSE) {
+                           zmq = FALSE, resume = FALSE, digits = 2) {
 
   # configuration --------------------------------------------------------------
 
@@ -48,15 +50,14 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE,
 
   # set working directory to SIMION executable directory
   wd = setwd(config$simion_dir)
-
-  # number of SIMION processes
-  np = config$np
   
   if (zmq) {
     # check if zmq is installed
     if (system(paste("simion  --nogui --quiet --lua \"require 'zmq'\""), ignore.stdout = TRUE) != 0) {
       stop("ZeroMQ library not found.")
     }
+    # number of SIMION processes
+    np = config$np
     # open worker processes
     flyoptions = paste0("--recording-enable=0 --adjustable tuneR=1 ", 
                         "--adjustable master=0 --adjustable zmq=1")
@@ -314,15 +315,12 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE,
 
   result_string = bestpoint_run[2:length(bestpoint_run)]
   print(paste0("Best point: ", paste0(names(result_string), "=", 
-                                      round(result_string, 2), collapse = " | ")))
+                                      round(result_string, digits), collapse = " | ")))
 
   utils::write.table(signif(bestpoint_run, 12), file = file.path(tuneR_dir, "runs.txt"), 
                      sep = "|", row.names = FALSE, col.names = FALSE, eol = "|\n")
-  if (write) {
-    utils::write.table(signif(bestpoint_run, 12), 
-                       file = file.path(tuneR_dir, resultdir, "bestpoint_run.txt"), 
-                       sep = "|", row.names = FALSE, col.names = TRUE, eol = "|\n")
-  }
+  utils::write.table(signif(bestpoint_run, 12), file = file.path(tuneR_dir, "bestpoint_run.txt"), 
+                     sep = "|", row.names = FALSE, col.names = TRUE, eol = "|\n")
 
   # run simulation
   if (zmq) {
@@ -353,10 +351,12 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE,
   if (write) {
     file.copy(file.path(tuneR_dir, "results.txt"), 
               file.path(tuneR_dir, resultdir, "bestpoint_results.txt"))
+    file.copy(file.path(tuneR_dir, "bestpoint_run.txt"), 
+              file.path(tuneR_dir, resultdir, "bestpoint_run.txt"))
   }
-  file.rename(file.path(tuneR_dir, "results.txt"), file.path(tuneR_dir, "bestpoint_results.txt"))
+  file.remove(file.path(tuneR_dir, "results.txt"))
   file.remove(file.path(tuneR_dir, "runs.txt"))
-
+  
   # plot results ---------------------------------------------------------------
   
   if (k==1) {

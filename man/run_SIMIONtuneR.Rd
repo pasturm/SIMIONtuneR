@@ -9,7 +9,8 @@ run_SIMIONtuneR(
   nogui = TRUE,
   write = TRUE,
   zmq = FALSE,
-  resume = FALSE
+  resume = FALSE,
+  digits = 2
 )
 }
 \arguments{
@@ -21,9 +22,12 @@ run_SIMIONtuneR(
 
 \item{zmq}{Use the ZeroMQ library for parallel processing (\code{TRUE} or \code{FALSE} (default)).}
 
-\item{resume}{if \code{FALSE} (default) starting values are taken from the
+\item{resume}{If \code{FALSE} (default) starting values are taken from the
 tuneR_config file, if \code{TRUE} starting values are taken from the last
 bestpoint_run.txt (see 'Details').}
+
+\item{digits}{Controls the number of decimal places to print when
+printing the best point values.}
 }
 \value{
 A data.frame containing the optimized best points from the last run.

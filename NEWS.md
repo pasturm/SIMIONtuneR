@@ -1,9 +1,12 @@
-# Version 0.3.2.9001
+# Version 0.3.2.9002
 
 * `run_SIMIONtuneR()` returns the optimized best point of the last run.
 
 * Added `resume` parameter in `run_SIMIONtuneR()` which (if `TRUE`) takes the 
   starting values from the last best point optimization.
+  
+* Added `digits` parameter in `run_SIMIONtuneR()` which controls the number
+  of decimal places to print when printing the best point values. 
 
 
 # Version 0.3.2
