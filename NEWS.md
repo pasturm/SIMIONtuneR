@@ -1,18 +1,17 @@
-# Version 0.3.2.9002
+# Version 0.3.3
 
-* `run_SIMIONtuneR()` returns the optimized best point of the last run.
-
+* `run_SIMIONtuneR()` returns the best point of the last run.
 * Added `resume` parameter in `run_SIMIONtuneR()` which (if `TRUE`) takes the 
-  starting values from the last best point optimization.
-  
+  starting values from the previous best point.
 * Added `digits` parameter in `run_SIMIONtuneR()` which controls the number
-  of decimal places to print when printing the best point values. 
+  of decimal places to print when printing the best point values.
+* If the best point from the model run is worse than the best point from the
+  experiment run, then the best experiment run is selected as the best point.
 
 
 # Version 0.3.2
 
 * Log messages adjusted.
-
 * Using GitHub Actions instead of Travis CI for continuous integration. 
 
 
@@ -20,7 +19,6 @@
 
 * The path of the SIMION workbench file can be given relative to the path of the
   configuration file.
-  
 * Removed the `n_ions` variable in the configuration file. The number of ions 
   can be configured in SIMION's fly2 file.
 
@@ -50,7 +48,7 @@
 
 # Version 0.2.2
 
-* Moved non-SIMION related functions to another (imo) package.
+* Moved non-SIMION related functions to another package (imo).
 
 
 # Version 0.2.1

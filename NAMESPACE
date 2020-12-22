@@ -2,6 +2,7 @@
 
 export(cost_function)
 export(desirability)
+export(desirability_meas)
 export(desirability_overall)
 export(plot_coeffs)
 export(plot_results)

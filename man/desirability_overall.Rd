@@ -20,7 +20,7 @@ desirability_overall(
 
 \item{Target}{Vector of the target values for each response.}
 
-\item{w}{Vector of weights for each the response.}
+\item{w}{Vector of weights for each response.}
 
 \item{nfact}{Number of factor values.}
 

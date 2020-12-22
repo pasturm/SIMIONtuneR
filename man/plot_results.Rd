@@ -11,9 +11,10 @@ plot_results(
   resultdir,
   result,
   runs,
-  bestpoint_run,
-  bestpoint_result,
+  run_optimized,
+  result_optimized,
   bestpoint_predicted,
+  bestpoint_selected,
   xylabel
 )
 }
@@ -30,11 +31,13 @@ plot_results(
 
 \item{runs}{Box-Behnken design data.}
 
-\item{bestpoint_run}{Bestpoint control values.}
+\item{run_optimized}{Optimized bestpoint control values.}
 
-\item{bestpoint_result}{Verified bestpoint result.}
+\item{result_optimized}{Verified optimized bestpoint result.}
 
 \item{bestpoint_predicted}{Model prediction of bestpoint result.}
+
+\item{bestpoint_selected}{Selected bestpoint.}
 
 \item{xylabel}{Axis labels.}
 }

@@ -26,9 +26,9 @@ cost_function = function(y, rsm_output, nfact, xnam) {
 #'
 #' @param factors Factors (tuning variables).
 #' @param Target Target value for the response.
-#' @param a Parameter of the quadratic desirabilty function, defaults to a = 0.
-#' @param b Parameter of the quadratic desirabilty function, defaults to b = 0.2.
-#' @param c Parameter of the quadratic desirabilty function, defaults to c = 0.8.
+#' @param a Parameter of the quadratic desirability function, defaults to a = 0.
+#' @param b Parameter of the quadratic desirability function, defaults to b = 0.2.
+#' @param c Parameter of the quadratic desirability function, defaults to c = 0.8.
 #' @param Pred_min Minimum value which can be reached by the model within the factor ranges.
 #' @param Pred_max Maximum value which can be reached by the model within the factor ranges.
 #' @param nfact Number of factor values.
@@ -68,7 +68,7 @@ desirability = function(factors, Target, w, a, b, c, nfact, xnam, tuner_rsm,
 #'
 #' @param factors Factors (tuning variables).
 #' @param Target Vector of the target values for each response.
-#' @param w Vector of weights for each the response.
+#' @param w Vector of weights for each response.
 #' @param nfact Number of factor values.
 #' @param xnam Formula names for \code{\link{rsm}}.
 #' @param tuner_rsm Second order model fit.
@@ -141,15 +141,17 @@ plot_coeffs = function(tuner_rsm, ylab = "", factors) {
 #' @param resultdir Results directory (used for legend text).
 #' @param result Results (Resolving power and sensitivity).
 #' @param runs Box-Behnken design data.
-#' @param bestpoint_run Bestpoint control values.
-#' @param bestpoint_result Verified bestpoint result.
+#' @param run_optimized Optimized bestpoint control values.
+#' @param result_optimized Verified optimized bestpoint result.
 #' @param bestpoint_predicted Model prediction of bestpoint result.
+#' @param bestpoint_selected Selected bestpoint.
 #' @param xylabel Axis labels.
 #'
 #' @keywords internal
 #' @export
-plot_results = function(pltly, k, n_steps, resultdir, result, runs, bestpoint_run,
-                        bestpoint_result, bestpoint_predicted, xylabel) {
+plot_results = function(pltly, k, n_steps, resultdir, result, runs, run_optimized,
+                        result_optimized, bestpoint_predicted, bestpoint_selected,
+                        xylabel) {
 
   colors = gplots::rich.colors(n_steps)
 
@@ -167,8 +169,8 @@ plot_results = function(pltly, k, n_steps, resultdir, result, runs, bestpoint_ru
     tmp2[i] = paste0(lapply(tmp1, "[", i), collapse = "<br>")
   }
   tmp3 = list()
-  for (i in 1:length(bestpoint_run)) {
-    tmp3[[i]] = paste0(names(bestpoint_run)[i], ": ", signif(bestpoint_run[i], 12))
+  for (i in 1:length(run_optimized)) {
+    tmp3[[i]] = paste0(names(run_optimized)[i], ": ", signif(run_optimized[i], 12))
   }
   tmp4 = paste0(lapply(tmp3, "[", 1), collapse = "<br>")
   # add markers
@@ -180,7 +182,7 @@ plot_results = function(pltly, k, n_steps, resultdir, result, runs, bestpoint_ru
                       marker = list(color = colors[k], symbol = "triangle-up"),
                       name = legendtext, showlegend = FALSE,
                       text = eval(tmp2[len]))  # center point
-  pltly = plotly::add_markers(pltly, data = bestpoint_result, x = ~res, y = ~sens,
+  pltly = plotly::add_markers(pltly, data = result_optimized, x = ~res, y = ~sens,
                       marker = list(color = colors[k], symbol = "o", size = 12),
                       name = legendtext, showlegend = FALSE,
                       text = eval(tmp4))  # best point measured
@@ -188,10 +190,62 @@ plot_results = function(pltly, k, n_steps, resultdir, result, runs, bestpoint_ru
                       marker = list(color = colors[k], symbol = "circle-open", size = 12),
                       name = legendtext, showlegend = FALSE,
                       text = eval(tmp4))  # best point predicted
+  pltly = plotly::add_markers(pltly, data = bestpoint_selected, x = ~res, y = ~sens,
+                              marker = list(color = colors[k], symbol = "star", size = 12),
+                              name = legendtext, showlegend = FALSE,
+                              text = eval(tmp4))  # best point selected
 
   # plot
   pltly = plotly::layout(pltly, title = "", xaxis = list(title = xylabel[1]),
                  yaxis = list(title = xylabel[2]))
   print(pltly)
   return(pltly)
+}
+
+# desirability_meas ---------------------------------------------------------
+#' Overall desirability function for the measured responses.
+#'
+#' \code{desirability_meas} is the overall desirability function for the 
+#' measured responses.
+#' 
+#' Note that the desirability of the measured responses also depends on the
+#' rsm model (via Pred_min and Pred_max).
+#'
+#' @param y Array of the measured responses (typically resolution or sensitivity).
+#' @param Target Vector of the target values for each response.
+#' @param w Vector of weights for each response.
+#' @param Pred_min Vector of minimum values which can be reached by the model
+#' within the factor ranges for each response variable.
+#' @param Pred_max Vector of maximum value which can be reached by the model
+#' within the factor ranges for each response variable.
+#'
+#' @keywords internal
+#' @export
+desirability_meas = function(y, Target, w, Pred_min, Pred_max) {
+  
+  desir = numeric(length(w))
+  desirability = numeric(dim(y)[1])
+  for (j in 1:length(desirability)) {
+    
+    for (i in 1:length(w)) {
+      
+      if (y[j,i] < Target[i]) {
+        P = Pred_min[i]
+      } else {
+        P = Pred_max[i]
+      }
+      
+      target = min(Pred_max[i], max(Pred_min[i], Target[i]))
+      
+      X = (target - y[j,i])/(target - P)
+      
+      desir[i] = 0.2*X + 0.8*X^2 - 1
+      
+      if (is.na(desir[i])) { desir[i] = 0 }  # e.g. when Target = P
+    }
+    
+    desirability[j] = sum(w*desir)/sum(w)
+  }
+  
+  return(desirability)
 }

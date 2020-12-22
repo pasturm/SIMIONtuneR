@@ -23,11 +23,11 @@ desirability(
 
 \item{Target}{Target value for the response.}
 
-\item{a}{Parameter of the quadratic desirabilty function, defaults to a = 0.}
+\item{a}{Parameter of the quadratic desirability function, defaults to a = 0.}
 
-\item{b}{Parameter of the quadratic desirabilty function, defaults to b = 0.2.}
+\item{b}{Parameter of the quadratic desirability function, defaults to b = 0.2.}
 
-\item{c}{Parameter of the quadratic desirabilty function, defaults to c = 0.8.}
+\item{c}{Parameter of the quadratic desirability function, defaults to c = 0.8.}
 
 \item{nfact}{Number of factor values.}
 

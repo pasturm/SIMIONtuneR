@@ -30,7 +30,7 @@ bestpoint_run.txt (see 'Details').}
 printing the best point values.}
 }
 \value{
-A data.frame containing the optimized best points from the last run.
+A data.frame containing the best points from the last run.
 }
 \description{
 \code{run_SIMIONtuneR} runs SIMIONtuneR simulation.

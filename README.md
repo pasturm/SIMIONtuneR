@@ -79,8 +79,8 @@ With `nogui = FALSE` SIMION log messages are shown and with `write = FALSE` no
 output files are written. This can be helpful for debugging.
 
 Usually, the starting values are taken from the configuration file. But you can 
-also start from a previously optimized best point. To do so, set `resume = TRUE`
-and the starting values from the bestpoint_run.txt file in the tuneR directory
+also start from a previous best point. To do so, set `resume = TRUE`
+and the starting values from the bestpoint.txt file in the tuneR directory
 will be used.
 
 ### Parallel Processing
