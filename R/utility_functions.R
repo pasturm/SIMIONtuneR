@@ -235,9 +235,7 @@ desirability_meas = function(y, Target, w, Pred_min, Pred_max) {
         P = Pred_max[i]
       }
       
-      target = min(Pred_max[i], max(Pred_min[i], Target[i]))
-      
-      X = (target - y[j,i])/(target - P)
+      X = (Target[i] - y[j,i])/(Target[i] - P)
       
       desir[i] = 0.2*X + 0.8*X^2 - 1
       

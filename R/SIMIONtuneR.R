@@ -114,18 +114,6 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE,
       }
     }
   }
-  
-  # assign starting values of controls to a variable
-  for (i in 1:ncont) {
-    if (!is.na(controls$StartValue[i])) {
-      assign(controls$Name[i], controls$StartValue[i])
-    }
-  }
-
-  # evaluate factor values
-  for (i in 1:nfact0) {
-    factors$Value[i] = eval(parse(text = factors$Transformation[i]))
-  }
 
   # formula names for rsm
   xnam = paste0("x", 1:nfact)
@@ -137,12 +125,24 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE,
   # generate Box-Behnken design ------------------------------------------------
 
   if (k>1) {
-    # load factors from bestpoint of last run
-    for (i in 1:length(bestpoint)) {
-      factors$Value[factors$Name==names(bestpoint)[i]] = as.numeric(bestpoint[i])
+    # control values from last run
+    for (i in 2:(length(bestpoint_run))) {
+      controls$StartValue[controls$Name==names(bestpoint_run)[i]] = as.numeric(bestpoint_run[i])
     }
   }
 
+  # assign starting values of controls to a variable
+  for (i in 1:ncont) {
+    if (!is.na(controls$StartValue[i])) {
+      assign(controls$Name[i], controls$StartValue[i])
+    }
+  }
+
+  # evaluate factor values
+  for (i in 1:nfact0) {
+    factors$Value[i] = eval(parse(text = factors$Transformation[i]))
+  }
+    
   factors_enabled = factors[factors$Enabled,]
 
   # coerce to limits
