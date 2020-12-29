@@ -7,6 +7,8 @@
   of decimal places to print when printing the best point values.
 * If the best point from the model run is worse than the best point from the
   experiment run, then the best experiment run is selected as the best point.
+* The SIMION executable directory is automatically determined and does not need
+  to be specified in the configuration file any more. 
 
 
 # Version 0.3.2

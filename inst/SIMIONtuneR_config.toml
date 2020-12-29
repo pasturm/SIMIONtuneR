@@ -1,14 +1,12 @@
 # SIMIONtuneR configuration file
 
-# SIMION workbench file (absolute path or path relative to this config file,
-# use forward slash or double backslash separators)
+# SIMION workbench file 
+# (absolute path or path relative to this config file, use forward slash or 
+# double backslash separators)
 iob = "test.iob"
 
-# SIMION executable directory 
-simion_dir = "C:/Program Files/SIMION-8.2"
-
-# Number of processes (only used if run with "zmq = TRUE")
-np = 4
+# Number of processes (only needed if "zmq = TRUE")
+# np = 4
 
 # Number of repetitions
 n_repeats = 10
@@ -21,20 +19,20 @@ n_repeats = 10
 # Factors
 # (Between 3 and 7 factors need to be enabled)
 [factors]
-1 = { Name = "v_1",     Enabled = 1, Transformation = "V1",        Range = 10, LowLimit = -500, HighLimit = 500 }
-2 = { Name = "v_2",     Enabled = 1, Transformation = "V2",        Range = 20, LowLimit = -500, HighLimit = 500 }
-3 = { Name = "v_3",     Enabled = 1, Transformation = "V3",        Range = 20, LowLimit = -500, HighLimit = 500 }
-4 = { Name = "v_diff",  Enabled = 1, Transformation = "V4-V5",     Range = 20, LowLimit = -500, HighLimit = 500 }
-5 = { Name = "v_ave",   Enabled = 0, Transformation = "(V4+V5)/2", Range = 20, LowLimit = -500, HighLimit = 500 }
-6 = { Name = "v_6",     Enabled = 0, Transformation = "V6",        Range = 20, LowLimit = -500, HighLimit = 500 }
+1 = { Name = "v1",    Enabled = 1, Transformation = "V1",        Range = 10, LowLimit = -500, HighLimit = 500 }
+2 = { Name = "v2",    Enabled = 1, Transformation = "V2",        Range = 20, LowLimit = -500, HighLimit = 500 }
+3 = { Name = "v3",    Enabled = 1, Transformation = "V3",        Range = 20, LowLimit = -500, HighLimit = 500 }
+4 = { Name = "vdiff", Enabled = 1, Transformation = "V4-V5",     Range = 20, LowLimit = -500, HighLimit = 500 }
+5 = { Name = "vave",  Enabled = 0, Transformation = "(V4+V5)/2", Range = 20, LowLimit = -500, HighLimit = 500 }
+6 = { Name = "v6",    Enabled = 0, Transformation = "V6",        Range = 20, LowLimit = -500, HighLimit = 500 }
 
 # Controls
 # (The control names need to be the parameters of the runner.jobrun(i, ...)
 # function in the workbench lua program)
 [controls]
-1 =  { Name = "V1", Transformation = "v_1",              StartValue = 20 }
-2 =  { Name = "V2", Transformation = "v_2",              StartValue = -40 }
-3 =  { Name = "V3", Transformation = "v_3",              StartValue = -100 }
-4 =  { Name = "V4", Transformation = "v_ave+0.5*v_diff", StartValue = -200 }
-5 =  { Name = "V5", Transformation = "v_ave-0.5*v_diff", StartValue = -300 }
-6 =  { Name = "V6", Transformation = "v_6",              StartValue = -100 }
+1 =  { Name = "V1", Transformation = "v1",             StartValue = 20 }
+2 =  { Name = "V2", Transformation = "v2",             StartValue = -40 }
+3 =  { Name = "V3", Transformation = "v3",             StartValue = -100 }
+4 =  { Name = "V4", Transformation = "vave+0.5*vdiff", StartValue = -200 }
+5 =  { Name = "V5", Transformation = "vave-0.5*vdiff", StartValue = -300 }
+6 =  { Name = "V6", Transformation = "v6",             StartValue = -100 }

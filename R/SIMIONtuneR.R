@@ -49,11 +49,12 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE,
   if (!dir.exists(tuneR_dir)) { dir.create(tuneR_dir) }
 
   # set working directory to SIMION executable directory
-  wd = setwd(config$simion_dir)
+  simion_exe = shell('simion --nogui --lua "print(simion._internal.simion_exe)"', intern = TRUE)
+  wd = setwd(dirname(simion_exe))
   
   if (zmq) {
     # check if zmq is installed
-    if (system(paste("simion  --nogui --quiet --lua \"require 'zmq'\""), ignore.stdout = TRUE) != 0) {
+    if (system("simion  --nogui --quiet --lua \"require 'zmq'\"", ignore.stdout = TRUE) != 0) {
       stop("ZeroMQ library not found.")
     }
     # number of SIMION processes
@@ -349,7 +350,7 @@ run_SIMIONtuneR = function(tuneR_config, nogui = TRUE, write = TRUE,
   desir = desirability_meas(cbind(result$res, result$sens), 
                             responses$Target, responses$Weight,
                             c(Pred_min_R, Pred_min_S), c(Pred_max_R, Pred_max_S))
-  # desirablilty of the optmized best point run
+  # desirability of the optimized best point run
   desir_opt = desirability_meas(cbind(result_optimized$res, result_optimized$sens), 
                                 responses$Target, responses$Weight,
                                 c(Pred_min_R, Pred_min_S), c(Pred_max_R, Pred_max_S))
