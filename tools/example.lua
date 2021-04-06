@@ -71,7 +71,7 @@ function segment.flym()
       end
     end
     
-    -- Processe each run job result.
+    -- Process each run job result.
     function runner.jobresult(run_no,resolution,sensitivity)
       fp = assert(io.open(tuneRdir.."results.txt","a+")) 
       fp:write(string.format("%i|%.3f|%.6f\n", run_no, resolution or 0, sensitivity))

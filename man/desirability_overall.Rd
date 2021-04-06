@@ -24,7 +24,7 @@ desirability_overall(
 
 \item{nfact}{Number of factor values.}
 
-\item{xnam}{Formula names for \code{\link{rsm}}.}
+\item{xnam}{Formula names for \code{\link[rsm:rsm]{rsm::rsm()}}.}
 
 \item{tuner_rsm}{Second order model fit.}
 

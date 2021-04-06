@@ -13,7 +13,7 @@ cost_function(y, rsm_output, nfact, xnam)
 
 \item{nfact}{Number of factor values.}
 
-\item{xnam}{Formula names for \code{\link{rsm}}.}
+\item{xnam}{Formula names for \code{\link[rsm:rsm]{rsm::rsm()}}.}
 }
 \description{
 \code{cost_function}
